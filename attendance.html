@@ -8,8 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <div class="app-shell">
       <aside class="sidebar" aria-label="Thanh điều hướng">
         <a class="brand" href="index.html" aria-label="PeopleHub, về tổng quan">
@@ -23,7 +25,7 @@
           <span class="chevron" aria-hidden="true">⌄</span>
         </div>
 
-        <nav class="side-nav">
+        <nav class="side-nav" aria-label="Điều hướng chính">
           <p class="nav-label">MENU CHÍNH</p>
           <a class="nav-link" href="index.html">
             <span class="nav-icon" aria-hidden="true">▦</span>Tổng quan
@@ -57,12 +59,12 @@
         </div>
       </aside>
 
-      <main class="main-area">
+      <main class="main-area" id="main-content">
         <header class="topbar">
           <div class="breadcrumbs"><span>Trang chủ</span><span aria-hidden="true">/</span><strong>Chấm công</strong></div>
           <div class="topbar-actions">
-            <span class="sync-status" role="status"><span class="loading-spinner" aria-hidden="true"></span><span class="sync-label">Đang đồng bộ</span></span>
-            <span class="today-label"><span aria-hidden="true">◷</span> Thứ Sáu, 28 tháng 6, 2025</span>
+            <span class="sync-status" role="status" aria-label="Dữ liệu minh họa"><span class="sync-label">Bản xem trước</span></span>
+            <span class="today-label"><span aria-hidden="true">◷</span><time data-current-date></time></span>
             <a class="topbar-avatar avatar avatar-violet" href="index.html" aria-label="Hồ sơ Minh Linh">ML</a>
           </div>
         </header>
@@ -72,10 +74,15 @@
             <div>
               <p class="overline">QUẢN LÝ THỜI GIAN</p>
               <h1 id="page-title">Chấm công & nghỉ phép</h1>
-              <p class="page-subtitle">Theo dõi giờ vào ra, đi muộn, làm thêm giờ và đơn nghỉ phép.</p>
+              <p class="page-subtitle">Giao diện mẫu theo dõi giờ công; số liệu không phải dữ liệu chấm công thực tế.</p>
             </div>
             <div class="toolbar-actions">
-              <a class="action-button primary" href="#">+ Tạo đơn mới</a>
+              <button
+                class="action-button primary"
+                type="button"
+                disabled
+                title="Chức năng cần kết nối với hệ thống quản lý nhân sự."
+              >+ Tạo đơn mới</button>
             </div>
           </section>
 
@@ -102,21 +109,58 @@
             <div class="data-header">
               <div>
                 <h2 id="attendance-table-title">Bảng chấm công tháng 6/2025</h2>
-                <p class="page-subtitle">Cập nhật từ thiết bị chấm công và mobile app</p>
+                <p class="page-subtitle">5 bản ghi minh họa tháng 6/2025; không đại diện toàn bộ nhân sự</p>
               </div>
-              <a class="secondary-button" href="#">Xuất báo cáo <span aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="data-table-tools" data-table-controls>
+              <label class="table-search">
+                <span>Tìm kiếm</span>
+                <input type="search" data-table-search placeholder="Tên nhân viên hoặc phòng ban" aria-label="Tìm kiếm bảng chấm công">
+              </label>
+              <label class="table-control">
+                <span>Trạng thái</span>
+                <select data-filter-column="5" aria-label="Lọc theo trạng thái chấm công">
+                  <option value="">Tất cả</option>
+                  <option>Đúng giờ</option>
+                  <option>Đi muộn</option>
+                  <option>Nghỉ phép</option>
+                </select>
+              </label>
+              <label class="table-control">
+                <span>Sắp xếp</span>
+                <select data-table-sort aria-label="Sắp xếp theo tên nhân viên">
+                  <option value="asc">Tên A–Z</option>
+                  <option value="desc">Tên Z–A</option>
+                </select>
+              </label>
+              <label class="table-control page-size-control">
+                <span>Số dòng</span>
+                <select data-page-size aria-label="Số dòng trên mỗi trang">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="all">All</option>
+                </select>
+              </label>
+              <button class="action-button" type="button" data-export-table>Xuất báo cáo CSV</button>
+              <p class="pagination-summary" data-pagination-summary role="status" aria-live="polite"></p>
+              <div class="pagination-actions" aria-label="Điều hướng trang">
+                <button class="page-button" type="button" data-page-prev aria-label="Trang trước">‹</button>
+                <button class="page-button" type="button" data-page-next aria-label="Trang sau">›</button>
+              </div>
             </div>
 
             <div class="data-table-wrapper">
-              <table class="data-table">
+              <table class="data-table" aria-labelledby="attendance-table-title">
                 <thead>
                   <tr>
-                    <th>Nhân viên</th>
-                    <th>Ca làm</th>
-                    <th>Giờ vào</th>
-                    <th>Giờ ra</th>
-                    <th>OT</th>
-                    <th>Trạng thái</th>
+                    <th scope="col">Nhân viên</th>
+                    <th scope="col">Ca làm</th>
+                    <th scope="col">Giờ vào</th>
+                    <th scope="col">Giờ ra</th>
+                    <th scope="col">OT</th>
+                    <th scope="col">Trạng thái</th>
                   </tr>
                 </thead>
                 <tbody>

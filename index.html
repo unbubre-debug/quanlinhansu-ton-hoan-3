@@ -10,20 +10,15 @@
     <title>Nhân sự — Bảng điều khiển</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     >
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
-    >
     <link rel="stylesheet" href="styles.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script defer src="app.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#overview">Chuyển đến nội dung chính</a>
     <div class="app-shell">
       <aside class="sidebar" aria-label="Thanh điều hướng">
         <a class="brand" href="#overview" aria-label="PeopleHub, về tổng quan">
@@ -37,7 +32,7 @@
           <span class="chevron" aria-hidden="true">⌄</span>
         </div>
 
-        <nav class="side-nav">
+        <nav class="side-nav" aria-label="Điều hướng chính">
           <p class="nav-label">MENU CHÍNH</p>
           <a class="nav-link is-active" href="index.html" aria-current="page">
             <span class="nav-icon" aria-hidden="true">▦</span>Tổng quan
@@ -84,11 +79,10 @@
         <header class="topbar">
           <div class="breadcrumbs"><span>Trang chủ</span><span aria-hidden="true">/</span><strong>Tổng quan</strong></div>
           <div class="topbar-actions">
-            <span class="sync-status" role="status" aria-label="Đang tải dữ liệu">
-              <span class="loading-spinner" aria-hidden="true"></span>
-              <span class="sync-label">Đang tải dữ liệu</span>
+            <span class="sync-status" role="status" aria-label="Dữ liệu minh họa">
+              <span class="sync-label">Bản xem trước</span>
             </span>
-            <span class="today-label"><span aria-hidden="true">◷</span> Thứ Ba, 24 tháng 6, 2025</span>
+            <span class="today-label"><span aria-hidden="true">◷</span><time data-current-date></time></span>
             <a class="icon-button" href="#leave" aria-label="Thông báo">
               <span aria-hidden="true">♧</span><i></i>
             </a>
@@ -97,11 +91,11 @@
         </header>
 
         <div class="page-content">
-          <section class="welcome-row" aria-labelledby="welcome-title" data-aos="fade-up">
+          <section class="welcome-row" aria-labelledby="welcome-title">
             <div>
-              <p class="overline">THỨ BA, NGÀY 24 THÁNG 6, 2025</p>
+              <p class="overline"><time data-current-date="welcome"></time></p>
               <h1 id="welcome-title">Chào buổi sáng, Linh <span aria-hidden="true">✦</span></h1>
-              <p class="welcome-copy">Đây là tình hình nhân sự của công ty hôm nay.</p>
+              <p class="welcome-copy">Bản xem trước giao diện; mọi số liệu đều là dữ liệu minh họa.</p>
             </div>
             <a
               class="primary-button"
@@ -111,7 +105,7 @@
             </a>
           </section>
 
-          <section class="stats-grid" aria-label="Chỉ số nhân sự tổng quan" data-aos="fade-up">
+          <section class="stats-grid" aria-label="Chỉ số nhân sự tổng quan">
             <article class="stat-card">
               <div class="stat-top">
                 <span class="stat-icon icon-lavender" aria-hidden="true">♙</span>
@@ -119,7 +113,7 @@
               </div>
               <p class="stat-label">Tổng nhân viên</p>
               <div class="stat-value-row"><strong class="stat-value">248</strong><span class="stat-caption">so với tháng trước</span></div>
-              <div class="mini-bars" aria-hidden="true"><i style="--bar: 35%"></i><i style="--bar: 48%"></i><i style="--bar: 41%"></i><i style="--bar: 62%"></i><i style="--bar: 54%"></i><i style="--bar: 76%"></i><i style="--bar: 68%"></i><i style="--bar: 92%"></i></div>
+              <div class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
             </article>
             <article class="stat-card">
               <div class="stat-top">
@@ -128,7 +122,7 @@
               </div>
               <p class="stat-label">Đang làm việc</p>
               <div class="stat-value-row"><strong class="stat-value">231</strong><span class="stat-caption">93,1% tổng nhân sự</span></div>
-              <div class="progress-track"><span class="progress-fill fill-green" style="width: 93.1%"></span></div>
+              <div class="progress-track"><span class="progress-fill fill-green width-93"></span></div>
             </article>
             <article class="stat-card">
               <div class="stat-top">
@@ -137,7 +131,7 @@
               </div>
               <p class="stat-label">Đang nghỉ phép</p>
               <div class="stat-value-row"><strong class="stat-value">12</strong><span class="stat-caption">5,2% tổng nhân sự</span></div>
-              <div class="progress-track"><span class="progress-fill fill-orange" style="width: 22%"></span></div>
+              <div class="progress-track"><span class="progress-fill fill-orange width-22"></span></div>
             </article>
             <article class="stat-card">
               <div class="stat-top">
@@ -146,11 +140,11 @@
               </div>
               <p class="stat-label">Vị trí đang tuyển</p>
               <div class="stat-value-row"><strong class="stat-value">05</strong><span class="stat-caption">3 phòng ban</span></div>
-              <div class="progress-track"><span class="progress-fill fill-blue" style="width: 55%"></span></div>
+              <div class="progress-track"><span class="progress-fill fill-blue width-55"></span></div>
             </article>
           </section>
 
-          <section class="feature-strip" aria-labelledby="feature-title" data-aos="fade-up">
+          <section class="feature-strip" aria-labelledby="feature-title">
             <div class="section-header">
               <div>
                 <p class="overline">HỆ THỐNG QUẢN LÝ NHÂN SỰ</p>
@@ -234,7 +228,7 @@
             </div>
           </section>
 
-          <section class="info-grid" aria-label="Thông tin và lịch công ty" data-aos="fade-up">
+          <section class="info-grid" aria-label="Thông tin và lịch công ty">
             <article class="panel announcements-panel">
               <div class="panel-heading">
                 <div>
@@ -294,7 +288,7 @@
           </section>
 
           <div class="dashboard-grid">
-            <section class="panel attendance-panel" id="attendance" aria-labelledby="attendance-title" data-aos="fade-up">
+            <section class="panel attendance-panel" id="attendance" aria-labelledby="attendance-title">
               <div class="panel-heading">
                 <div>
                   <h2 id="attendance-title">Tổng quan chấm công</h2>
@@ -312,17 +306,17 @@
                 <div class="chart-plot">
                   <div class="chart-grid-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
                   <div class="bar-groups">
-                    <div class="bar-group"><div class="bar-stack"><i class="bar-present" style="height: 67%"></i><i class="bar-remote" style="height: 14%"></i><i class="bar-absent" style="height: 7%"></i></div><span>Thứ Hai</span></div>
-                    <div class="bar-group"><div class="bar-stack"><i class="bar-present" style="height: 72%"></i><i class="bar-remote" style="height: 12%"></i><i class="bar-absent" style="height: 5%"></i></div><span>Thứ Ba</span></div>
-                    <div class="bar-group"><div class="bar-stack"><i class="bar-present" style="height: 63%"></i><i class="bar-remote" style="height: 16%"></i><i class="bar-absent" style="height: 9%"></i></div><span>Thứ Tư</span></div>
-                    <div class="bar-group"><div class="bar-stack"><i class="bar-present" style="height: 75%"></i><i class="bar-remote" style="height: 11%"></i><i class="bar-absent" style="height: 6%"></i></div><span>Thứ Năm</span></div>
-                    <div class="bar-group"><div class="bar-stack"><i class="bar-present" style="height: 69%"></i><i class="bar-remote" style="height: 14%"></i><i class="bar-absent" style="height: 8%"></i></div><span>Thứ Sáu</span></div>
+                    <div class="bar-group"><div class="bar-stack"><i class="bar-present bar-height-67"></i><i class="bar-remote bar-height-14"></i><i class="bar-absent bar-height-7"></i></div><span>Thứ Hai</span></div>
+                    <div class="bar-group"><div class="bar-stack"><i class="bar-present bar-height-72"></i><i class="bar-remote bar-height-12"></i><i class="bar-absent bar-height-5"></i></div><span>Thứ Ba</span></div>
+                    <div class="bar-group"><div class="bar-stack"><i class="bar-present bar-height-63"></i><i class="bar-remote bar-height-16"></i><i class="bar-absent bar-height-9"></i></div><span>Thứ Tư</span></div>
+                    <div class="bar-group"><div class="bar-stack"><i class="bar-present bar-height-75"></i><i class="bar-remote bar-height-11"></i><i class="bar-absent bar-height-6"></i></div><span>Thứ Năm</span></div>
+                    <div class="bar-group"><div class="bar-stack"><i class="bar-present bar-height-69"></i><i class="bar-remote bar-height-14"></i><i class="bar-absent bar-height-8"></i></div><span>Thứ Sáu</span></div>
                   </div>
                 </div>
               </div>
             </section>
 
-            <section class="panel departments-panel" id="departments" aria-labelledby="departments-title" data-aos="fade-up">
+            <section class="panel departments-panel" id="departments" aria-labelledby="departments-title">
               <div class="panel-heading">
                 <div><h2 id="departments-title">Phòng ban</h2><p>Phân bổ nhân sự</p></div>
                 <a class="more-link" href="#departments" aria-label="Xem thêm phòng ban">···</a>
@@ -331,34 +325,72 @@
               <div class="department-list">
                 <div class="department-item">
                   <div class="department-meta"><span><i class="department-dot dot-purple"></i>Thiết kế</span><strong>68 <small>27,4%</small></strong></div>
-                  <div class="progress-track"><span class="progress-fill fill-purple" style="width: 78%"></span></div>
+                  <div class="progress-track"><span class="progress-fill fill-purple width-78"></span></div>
                 </div>
                 <div class="department-item">
                   <div class="department-meta"><span><i class="department-dot dot-blue"></i>Công nghệ</span><strong>54 <small>21,8%</small></strong></div>
-                  <div class="progress-track"><span class="progress-fill fill-blue" style="width: 63%"></span></div>
+                  <div class="progress-track"><span class="progress-fill fill-blue width-63"></span></div>
                 </div>
                 <div class="department-item">
                   <div class="department-meta"><span><i class="department-dot dot-orange"></i>Marketing</span><strong>42 <small>16,9%</small></strong></div>
-                  <div class="progress-track"><span class="progress-fill fill-orange" style="width: 49%"></span></div>
+                  <div class="progress-track"><span class="progress-fill fill-orange width-49"></span></div>
                 </div>
                 <div class="department-item">
                   <div class="department-meta"><span><i class="department-dot dot-green"></i>Kinh doanh</span><strong>38 <small>15,3%</small></strong></div>
-                  <div class="progress-track"><span class="progress-fill fill-green" style="width: 44%"></span></div>
+                  <div class="progress-track"><span class="progress-fill fill-green width-44"></span></div>
                 </div>
                 <div class="department-item">
                   <div class="department-meta"><span><i class="department-dot dot-pink"></i>Nhân sự & vận hành</span><strong>46 <small>18,5%</small></strong></div>
-                  <div class="progress-track"><span class="progress-fill fill-pink" style="width: 53%"></span></div>
+                  <div class="progress-track"><span class="progress-fill fill-pink width-53"></span></div>
                 </div>
               </div>
             </section>
 
-            <section class="panel employees-panel" id="employees" aria-labelledby="employees-title" data-aos="fade-up">
+            <section class="panel employees-panel" id="employees" aria-labelledby="employees-title">
               <div class="panel-heading employee-heading">
-                <div><h2 id="employees-title">Nhân viên mới</h2><p>Chào đón những thành viên mới gia nhập</p></div>
-                <a class="secondary-button" href="#employees">Xem tất cả <span aria-hidden="true">→</span></a>
+                <div><h2 id="employees-title">Nhân viên mới</h2><p>4 hồ sơ minh họa; không đại diện toàn bộ nhân sự</p></div>
+                <a class="secondary-button" href="employees.html">Xem tất cả <span aria-hidden="true">→</span></a>
+              </div>
+              <div class="data-table-tools dashboard-table-tools" data-table-controls>
+                <label class="table-search">
+                  <span>Tìm kiếm</span>
+                  <input type="search" data-table-search placeholder="Tên, email hoặc vị trí" aria-label="Tìm kiếm nhân viên mới">
+                </label>
+                <label class="table-control">
+                  <span>Phòng ban</span>
+                  <select data-filter-column="2" aria-label="Lọc theo phòng ban">
+                    <option value="">Tất cả</option>
+                    <option>Thiết kế</option>
+                    <option>Công nghệ</option>
+                    <option>Marketing</option>
+                    <option>Nhân sự</option>
+                  </select>
+                </label>
+                <label class="table-control">
+                  <span>Sắp xếp</span>
+                  <select data-table-sort aria-label="Sắp xếp theo tên nhân viên">
+                    <option value="asc">Tên A–Z</option>
+                    <option value="desc">Tên Z–A</option>
+                  </select>
+                </label>
+                <label class="table-control page-size-control">
+                  <span>Số dòng</span>
+                  <select data-page-size aria-label="Số dòng trên mỗi trang">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="all">All</option>
+                  </select>
+                </label>
+                <button class="action-button" type="button" data-export-table>Xuất CSV</button>
+                <p class="pagination-summary" data-pagination-summary role="status" aria-live="polite"></p>
+                <div class="pagination-actions" aria-label="Điều hướng trang">
+                  <button class="page-button" type="button" data-page-prev aria-label="Trang trước">‹</button>
+                  <button class="page-button" type="button" data-page-next aria-label="Trang sau">›</button>
+                </div>
               </div>
               <div class="table-wrap">
-                <table>
+                <table class="data-table" aria-labelledby="employees-title">
                   <thead>
                     <tr><th scope="col">NHÂN VIÊN</th><th scope="col">VỊ TRÍ</th><th scope="col">PHÒNG BAN</th><th scope="col">NGÀY BẮT ĐẦU</th><th scope="col">TRẠNG THÁI</th></tr>
                   </thead>
@@ -384,7 +416,7 @@
               </div>
             </section>
 
-            <section class="panel leave-panel" id="leave" aria-labelledby="leave-title" data-aos="fade-up">
+            <section class="panel leave-panel" id="leave" aria-labelledby="leave-title">
               <div class="panel-heading">
                 <div><h2 id="leave-title">Yêu cầu nghỉ phép</h2><p>Cần bạn xem xét</p></div>
                 <span class="request-count">03 mới</span>

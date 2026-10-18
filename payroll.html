@@ -8,8 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <div class="app-shell">
       <aside class="sidebar" aria-label="Thanh điều hướng">
         <a class="brand" href="index.html" aria-label="PeopleHub, về tổng quan">
@@ -23,7 +25,7 @@
           <span class="chevron" aria-hidden="true">⌄</span>
         </div>
 
-        <nav class="side-nav">
+        <nav class="side-nav" aria-label="Điều hướng chính">
           <p class="nav-label">MENU CHÍNH</p>
           <a class="nav-link" href="index.html">
             <span class="nav-icon" aria-hidden="true">▦</span>Tổng quan
@@ -57,12 +59,12 @@
         </div>
       </aside>
 
-      <main class="main-area">
+      <main class="main-area" id="main-content">
         <header class="topbar">
           <div class="breadcrumbs"><span>Trang chủ</span><span aria-hidden="true">/</span><strong>Lương & Phúc lợi</strong></div>
           <div class="topbar-actions">
-            <span class="sync-status" role="status"><span class="loading-spinner" aria-hidden="true"></span><span class="sync-label">Đang tính lương</span></span>
-            <span class="today-label"><span aria-hidden="true">◷</span> Thứ Hai, 01 tháng 7, 2025</span>
+            <span class="sync-status" role="status" aria-label="Dữ liệu minh họa"><span class="sync-label">Bản xem trước</span></span>
+            <span class="today-label"><span aria-hidden="true">◷</span><time data-current-date></time></span>
             <a class="topbar-avatar avatar avatar-violet" href="index.html" aria-label="Hồ sơ Minh Linh">ML</a>
           </div>
         </header>
@@ -72,10 +74,7 @@
             <div>
               <p class="overline">LƯƠNG & PHÚC LỢI</p>
               <h1 id="page-title">Bảng lương nhân sự</h1>
-              <p class="page-subtitle">Theo dõi chi phí, khoản khấu trừ và phiếu lương cá nhân theo tháng.</p>
-            </div>
-            <div class="toolbar-actions">
-              <a class="action-button primary" href="#">+ Xuất phiếu lương</a>
+              <p class="page-subtitle">Giao diện mẫu theo dõi lương; số liệu không phải dữ liệu thanh toán thực tế.</p>
             </div>
           </section>
 
@@ -102,22 +101,58 @@
             <div class="data-header">
               <div>
                 <h2 id="payroll-table-title">Phiếu lương tháng 6/2025</h2>
-                <p class="page-subtitle">Bảng tính chi tiết từng cá nhân</p>
+                <p class="page-subtitle">4 phiếu lương minh họa tháng 6/2025; không phải dữ liệu thanh toán</p>
               </div>
-              <a class="secondary-button" href="#">Xem chi tiết <span aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="data-table-tools" data-table-controls>
+              <label class="table-search">
+                <span>Tìm kiếm</span>
+                <input type="search" data-table-search placeholder="Tên nhân viên hoặc chức vụ" aria-label="Tìm kiếm phiếu lương">
+              </label>
+              <label class="table-control">
+                <span>Trạng thái</span>
+                <select data-filter-column="6" aria-label="Lọc theo trạng thái thanh toán">
+                  <option value="">Tất cả</option>
+                  <option>Đã thanh toán</option>
+                  <option>Chờ duyệt</option>
+                </select>
+              </label>
+              <label class="table-control">
+                <span>Sắp xếp</span>
+                <select data-table-sort aria-label="Sắp xếp theo tên nhân viên">
+                  <option value="asc">Tên A–Z</option>
+                  <option value="desc">Tên Z–A</option>
+                </select>
+              </label>
+              <label class="table-control page-size-control">
+                <span>Số dòng</span>
+                <select data-page-size aria-label="Số dòng trên mỗi trang">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="all">All</option>
+                </select>
+              </label>
+              <button class="action-button primary" type="button" data-export-table>Xuất bảng lương CSV</button>
+              <p class="pagination-summary" data-pagination-summary role="status" aria-live="polite"></p>
+              <div class="pagination-actions" aria-label="Điều hướng trang">
+                <button class="page-button" type="button" data-page-prev aria-label="Trang trước">‹</button>
+                <button class="page-button" type="button" data-page-next aria-label="Trang sau">›</button>
+              </div>
             </div>
 
             <div class="data-table-wrapper">
-              <table class="data-table">
+              <table class="data-table" aria-labelledby="payroll-table-title">
                 <thead>
                   <tr>
-                    <th>Nhân viên</th>
-                    <th>Lương cơ bản</th>
-                    <th>Phụ cấp</th>
-                    <th>BHXH/BHYT</th>
-                    <th>Thưởng</th>
-                    <th>Tổng nhận</th>
-                    <th>Trạng thái</th>
+                    <th scope="col">Nhân viên</th>
+                    <th scope="col">Lương cơ bản</th>
+                    <th scope="col">Phụ cấp</th>
+                    <th scope="col">BHXH/BHYT</th>
+                    <th scope="col">Thưởng</th>
+                    <th scope="col">Tổng nhận</th>
+                    <th scope="col">Trạng thái</th>
                   </tr>
                 </thead>
                 <tbody>

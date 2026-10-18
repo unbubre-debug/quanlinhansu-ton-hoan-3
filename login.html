@@ -8,8 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <div class="auth-layout">
       <section class="auth-visual" aria-label="Tổng quan hệ thống nhân sự">
         <div class="auth-visual-inner">
@@ -43,34 +45,34 @@
         </div>
       </section>
 
-      <section class="auth-panel" aria-label="Màn hình đăng nhập">
+      <section class="auth-panel" id="main-content" aria-label="Màn hình đăng nhập">
         <div class="login-card">
           <h2>Đăng nhập</h2>
           <p>Chào mừng bạn quay lại, vui lòng nhập thông tin tài khoản.</p>
 
-          <form>
+          <form data-login-form>
             <div class="form-field">
               <label for="email">Email</label>
-              <input id="email" type="email" value="linh.minh@peoplehub.vn" aria-label="Email">
+              <input id="email" name="email" type="email" autocomplete="username" required>
             </div>
 
             <div class="form-field">
               <label for="password">Mật khẩu</label>
-              <input id="password" type="password" value="••••••••" aria-label="Mật khẩu">
+              <input id="password" name="password" type="password" autocomplete="current-password" required>
             </div>
 
             <div class="form-row">
               <label class="checkbox">
-                <input type="checkbox" checked>
+                <input type="checkbox" name="remember">
                 <span>Ghi nhớ đăng nhập</span>
               </label>
-              <a href="#">Quên mật khẩu?</a>
+              <a href="mailto:support@peoplehub.vn?subject=Yeu%20cau%20dat%20lai%20mat%20khau">Quên mật khẩu?</a>
             </div>
 
-            <button class="login-button" type="button" onclick="window.location.href='index.html'">Đăng nhập</button>
+            <button class="login-button" type="submit">Đăng nhập</button>
 
             <div class="login-meta">
-              Chưa có tài khoản? <a href="#">Liên hệ quản trị</a>
+              Chưa có tài khoản? <a href="mailto:support@peoplehub.vn?subject=Lien%20he%20quan%20tri">Liên hệ quản trị</a>
             </div>
           </form>
         </div>

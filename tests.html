@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PeopleHub — Kiểm thử bảng</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="app.js"></script>
+    <script defer src="tests.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#test-runner">Chuyển đến kết quả kiểm thử</a>
+    <main class="page-content" id="test-runner">
+      <section class="page-hero">
+        <div>
+          <p class="overline">BỘ KIỂM THỬ TRÌNH DUYỆT</p>
+          <h1>Kiểm thử bảng dữ liệu</h1>
+          <p class="page-subtitle">Kiểm tra tìm kiếm, lọc, sắp xếp, phân trang trên dữ liệu mẫu riêng.</p>
+        </div>
+        <a class="secondary-button" href="index.html">Về trang tổng quan</a>
+      </section>
+
+      <section class="panel data-panel" aria-labelledby="test-table-title">
+        <div class="data-header">
+          <div>
+            <h2 id="test-table-title">Bảng kiểm thử</h2>
+            <p class="page-subtitle">Dữ liệu này chỉ phục vụ kiểm thử, không lưu lại.</p>
+          </div>
+        </div>
+        <div class="data-table-tools" data-table-controls>
+          <label class="table-search">
+            <span>Tìm kiếm</span>
+            <input type="search" data-table-search aria-label="Tìm kiếm trong bảng kiểm thử">
+          </label>
+          <label class="table-control">
+            <span>Phòng ban</span>
+            <select data-filter-column="1" aria-label="Lọc phòng ban kiểm thử">
+              <option value="">Tất cả</option>
+              <option>Thiết kế</option>
+              <option>Công nghệ</option>
+            </select>
+          </label>
+          <label class="table-control">
+            <span>Sắp xếp</span>
+            <select data-table-sort aria-label="Sắp xếp bảng kiểm thử">
+              <option value="asc">Tên A–Z</option>
+              <option value="desc">Tên Z–A</option>
+            </select>
+          </label>
+          <label class="table-control page-size-control">
+            <span>Số dòng</span>
+            <select data-page-size aria-label="Số dòng kiểm thử">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="all">All</option>
+            </select>
+          </label>
+          <p class="pagination-summary" data-pagination-summary role="status" aria-live="polite"></p>
+          <div class="pagination-actions" aria-label="Điều hướng trang kiểm thử">
+            <button class="page-button" type="button" data-page-prev aria-label="Trang trước">‹</button>
+            <button class="page-button" type="button" data-page-next aria-label="Trang sau">›</button>
+          </div>
+        </div>
+        <div class="data-table-wrapper">
+          <table class="data-table" aria-labelledby="test-table-title">
+            <thead>
+              <tr>
+                <th scope="col">Nhân viên</th>
+                <th scope="col">Phòng ban</th>
+              </tr>
+            </thead>
+            <tbody data-test-rows>
+              <tr><td>Hoàng Ngọc</td><td>Thiết kế</td></tr>
+              <tr><td>Trần Anh</td><td>Công nghệ</td></tr>
+              <tr><td>Lê Minh</td><td>Thiết kế</td></tr>
+              <tr><td>Phạm Thảo</td><td>Công nghệ</td></tr>
+              <tr><td>Vũ Lâm</td><td>Thiết kế</td></tr>
+              <tr><td>Đỗ Quỳnh</td><td>Công nghệ</td></tr>
+              <tr><td>Nguyễn Vy</td><td>Thiết kế</td></tr>
+              <tr><td>Bùi Long</td><td>Công nghệ</td></tr>
+              <tr><td>Mai An</td><td>Thiết kế</td></tr>
+              <tr><td>Đặng Hà</td><td>Công nghệ</td></tr>
+              <tr><td>Lương Bình</td><td>Thiết kế</td></tr>
+              <tr><td>Cao Minh</td><td>Công nghệ</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel test-results" aria-labelledby="test-results-title">
+        <h2 id="test-results-title">Kết quả</h2>
+        <p data-test-summary role="status" aria-live="polite">Đang chạy kiểm thử…</p>
+        <ol data-test-output></ol>
+      </section>
+    </main>
+  </body>
+</html>
