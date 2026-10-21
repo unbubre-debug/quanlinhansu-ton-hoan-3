@@ -17,7 +17,7 @@
   --color-text: #25263a;
   --color-text-secondary: #66697e;
   --color-text-muted: #74778b;
-  --color-text-faint: #85889a;
+  --color-text-faint: #6f7285;
   --color-border: #ececf2;
   --color-border-soft: #f1f1f5;
   --color-primary: #7267e9;
@@ -200,7 +200,7 @@ a {
 .workspace-copy small,
 .user-copy small {
   color: var(--color-text-muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .chevron {
@@ -218,7 +218,7 @@ a {
 .nav-label {
   margin: 0 0 7px 10px;
   color: var(--color-text-faint);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
 }
@@ -314,7 +314,7 @@ a {
   max-width: 165px;
   margin: 7px 0 11px;
   color: var(--color-text-muted);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -323,7 +323,7 @@ a {
   align-items: center;
   gap: 5px;
   color: var(--color-primary-strong);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -396,7 +396,7 @@ a {
   align-items: center;
   gap: 10px;
   color: var(--color-text-muted);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .breadcrumbs strong {
@@ -415,7 +415,7 @@ a {
   align-items: center;
   gap: 7px;
   color: var(--color-text-muted);
-  font-size: 10px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -446,7 +446,7 @@ a {
 
 .today-label {
   color: var(--color-text-secondary);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .today-label span {
@@ -501,7 +501,7 @@ a {
 .overline {
   margin-bottom: 8px;
   color: var(--color-text-faint);
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.25px;
 }
@@ -1383,7 +1383,7 @@ td {
   gap: 12px;
   padding: 19px 1px 0;
   color: var(--color-text-faint);
-  font-size: 8px;
+  font-size: 11px;
 }
 
 .page-footer span span {
@@ -1409,7 +1409,8 @@ td {
 .page-subtitle {
   margin-top: 7px;
   color: var(--color-text-muted);
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .page-toolbar {
@@ -1440,7 +1441,7 @@ td {
   border-radius: 8px;
   background: var(--color-surface);
   color: var(--color-text-secondary);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -1467,8 +1468,8 @@ td {
 
 .summary-label {
   color: var(--color-text-muted);
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  font-size: 13px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -1486,7 +1487,7 @@ td {
 
 .summary-number span {
   color: var(--color-text-faint);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: normal;
 }
 
@@ -1522,8 +1523,8 @@ td {
 }
 
 .data-table th {
-  color: var(--color-text-faint);
-  font-size: 9px;
+  color: var(--color-text-muted);
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.55px;
   text-transform: uppercase;
@@ -1531,7 +1532,7 @@ td {
 
 .data-table td {
   color: var(--color-text-secondary);
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .data-table thead {
@@ -1545,7 +1546,7 @@ td {
   min-width: 94px;
   padding: 6px 8px;
   border-radius: 999px;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -2201,7 +2202,7 @@ body {
 .table-search > span,
 .table-control > span {
   color: var(--color-text-secondary);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -2215,11 +2216,11 @@ body {
   background: rgba(255, 255, 255, 0.76);
   color: var(--color-text);
   font: inherit;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .table-search input::placeholder {
-  color: var(--color-text-faint);
+  color: var(--color-text-muted);
 }
 
 .action-button,
@@ -2231,7 +2232,7 @@ body {
 
 .action-button {
   min-height: 38px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .action-button:hover {
@@ -2249,7 +2250,7 @@ body {
   background: #efeff5;
   border-color: #e4e5ed;
   box-shadow: none;
-  color: #85889a;
+  color: var(--color-text-muted);
   cursor: not-allowed;
 }
 
@@ -2257,7 +2258,7 @@ body {
   background: #efeff5;
   border-color: #e4e5ed;
   box-shadow: none;
-  color: #85889a;
+  color: var(--color-text-muted);
 }
 
 .table-search input:focus-visible,
@@ -2277,7 +2278,7 @@ body {
   align-items: center;
   margin: 0;
   color: var(--color-text-secondary);
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .pagination-actions {
@@ -2309,19 +2310,20 @@ body {
 }
 
 .data-table th {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .data-table td {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .employee-cell strong {
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .employee-cell small {
-  font-size: 9px;
+  color: var(--color-text-muted);
+  font-size: 11px;
 }
 
 .table-empty-row td {
