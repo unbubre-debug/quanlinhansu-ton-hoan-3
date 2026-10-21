@@ -48,17 +48,31 @@
       <section class="auth-panel" id="main-content" aria-label="Màn hình đăng nhập">
         <div class="login-card">
           <h2>Đăng nhập</h2>
-          <p>Chào mừng bạn quay lại, vui lòng nhập thông tin tài khoản.</p>
+          <p>Đăng nhập bản demo. Hệ thống hiện chưa xác thực tài khoản với máy chủ.</p>
 
           <form data-login-form>
             <div class="form-field">
               <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="username" required>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value="demo@peoplehub.vn"
+                autocomplete="username"
+                required
+              >
             </div>
 
             <div class="form-field">
               <label for="password">Mật khẩu</label>
-              <input id="password" name="password" type="password" autocomplete="current-password" required>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value="peoplehub-demo"
+                autocomplete="current-password"
+                required
+              >
             </div>
 
             <div class="form-row">
@@ -70,6 +84,7 @@
             </div>
 
             <button class="login-button" type="submit">Đăng nhập</button>
+            <p class="login-status" data-login-status role="status" aria-live="polite"></p>
 
             <div class="login-meta">
               Chưa có tài khoản? <a href="mailto:support@peoplehub.vn?subject=Lien%20he%20quan%20tri">Liên hệ quản trị</a>

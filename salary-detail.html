@@ -36,7 +36,7 @@
           <a class="nav-link" href="employees.html"><span class="nav-icon" aria-hidden="true">♙</span>Nhân viên</a>
           <a class="nav-link" href="attendance.html"><span class="nav-icon" aria-hidden="true">◷</span>Chấm công</a>
           <a class="nav-link is-active" href="payroll.html" aria-current="page"><span class="nav-icon" aria-hidden="true">◫</span>Lương</a>
-          <a class="nav-link" href="login.html"><span class="nav-icon" aria-hidden="true">⇏</span>Đăng xuất</a>
+          <a class="nav-link" href="login.html?logout=1"><span class="nav-icon" aria-hidden="true">⇏</span>Đăng xuất</a>
         </nav>
         <div class="sidebar-bottom">
           <div class="help-card">
@@ -45,11 +45,11 @@
             <p>Đội ngũ của chúng tôi luôn sẵn sàng giúp bạn.</p>
             <a href="mailto:support@peoplehub.vn">Liên hệ hỗ trợ <span aria-hidden="true">↗</span></a>
           </div>
-          <a class="user-profile" href="index.html">
+          <div class="user-profile">
             <span class="avatar avatar-violet">ML</span>
             <span class="user-copy"><strong>Minh Linh</strong><small>Quản trị viên</small></span>
             <span class="chevron" aria-hidden="true">···</span>
-          </a>
+          </div>
         </div>
       </aside>
 
@@ -61,7 +61,7 @@
           <div class="topbar-actions">
             <span class="sync-status" role="status" aria-label="Dữ liệu minh họa"><span class="sync-label">Bản xem trước</span></span>
             <span class="today-label"><span aria-hidden="true">◷</span><time data-current-date></time></span>
-            <a class="topbar-avatar avatar avatar-violet" href="index.html" aria-label="Hồ sơ Minh Linh">ML</a>
+            <span class="topbar-avatar avatar avatar-violet" role="img" aria-label="Hồ sơ Minh Linh">ML</span>
           </div>
         </header>
 
@@ -79,7 +79,10 @@
             Dữ liệu chỉ dùng để minh họa. Ngày công được lưu trong trình duyệt này; kết quả không phải bảng lương chính thức.
           </p>
 
-          <p class="salary-detail-error" data-salary-error role="alert" hidden></p>
+          <div class="salary-detail-error" data-salary-error role="alert" hidden>
+            <p data-salary-error-message></p>
+            <a class="secondary-button" href="payroll.html">Mở bảng lương để chọn nhân viên</a>
+          </div>
           <section class="salary-detail-grid" data-salary-detail aria-label="Chi tiết thu nhập nhân viên">
             <article class="panel salary-employee-card">
               <div class="salary-employee-heading">

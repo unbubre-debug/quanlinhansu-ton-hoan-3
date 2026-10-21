@@ -290,12 +290,18 @@ function initializeSalaryDetail() {
   }
 
   const employeeId = new URLSearchParams(window.location.search).get("employee");
+  if (!employeeId) {
+    window.location.replace("index.html");
+    return;
+  }
+
   const employee = Object.hasOwn(salaryRecords, employeeId) ? salaryRecords[employeeId] : null;
   const errorMessage = document.querySelector("[data-salary-error]");
   if (!employee) {
     detail.hidden = true;
     errorMessage.hidden = false;
-    errorMessage.textContent = "Không tìm thấy nhân viên trong dữ liệu lương minh họa.";
+    errorMessage.querySelector("[data-salary-error-message]").textContent =
+      "Không tìm thấy nhân viên trong dữ liệu lương minh họa. Hãy quay lại bảng lương và chọn một nhân viên hợp lệ.";
     return;
   }
 
@@ -381,7 +387,50 @@ initializePayrollEstimates();
 initializeSalaryDetail();
 
 const loginForm = document.querySelector("[data-login-form]");
-loginForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  window.location.assign("index.html");
-});
+const rememberedLoginKey = "peoplehub:auth:remembered";
+const activeLoginKey = "peoplehub:auth:active";
+
+if (loginForm) {
+  const loginStatus = loginForm.querySelector("[data-login-status]");
+  const isLoggingOut = new URLSearchParams(window.location.search).get("logout") === "1";
+
+  try {
+    if (isLoggingOut) {
+      localStorage.removeItem(rememberedLoginKey);
+      sessionStorage.removeItem(activeLoginKey);
+      window.history.replaceState(null, "", window.location.pathname);
+    } else if (
+      localStorage.getItem(rememberedLoginKey) === "true" ||
+      sessionStorage.getItem(activeLoginKey) === "true"
+    ) {
+      window.location.replace("index.html");
+    }
+  } catch (error) {
+    console.error("Không thể kiểm tra phiên đăng nhập đã lưu.", error);
+    loginStatus.textContent = "Không thể đọc trạng thái đăng nhập trong trình duyệt. Hãy bật bộ nhớ trang web rồi thử lại.";
+  }
+
+  loginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const rememberLogin = loginForm.elements.remember.checked;
+
+    try {
+      sessionStorage.setItem(activeLoginKey, "true");
+      if (rememberLogin) {
+        localStorage.setItem(rememberedLoginKey, "true");
+      } else {
+        localStorage.removeItem(rememberedLoginKey);
+      }
+      window.location.assign("index.html");
+    } catch (error) {
+      console.error("Không thể lưu phiên đăng nhập.", error);
+      try {
+        sessionStorage.removeItem(activeLoginKey);
+        localStorage.removeItem(rememberedLoginKey);
+      } catch (cleanupError) {
+        console.error("Không thể xóa trạng thái đăng nhập chưa lưu hoàn chỉnh.", cleanupError);
+      }
+      loginStatus.textContent = "Không thể lưu phiên đăng nhập. Hãy kiểm tra quyền truy cập bộ nhớ của trình duyệt rồi thử lại.";
+    }
+  });
+}
