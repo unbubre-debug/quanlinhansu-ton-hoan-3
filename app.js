@@ -181,6 +181,205 @@ function initializeTableControls(controls) {
 updateCurrentDates();
 document.querySelectorAll("[data-table-controls]").forEach(initializeTableControls);
 
+const salaryRecords = {
+  hn: {
+    name: "Hoàng Ngọc",
+    initials: "HN",
+    role: "Product Designer · Thiết kế",
+    base: 18500000,
+    allowance: 2100000,
+    insurance: 1400000,
+    bonus: 1000000,
+  },
+  ta: {
+    name: "Trần Anh",
+    initials: "TA",
+    role: "Frontend Developer · Công nghệ",
+    base: 22000000,
+    allowance: 2800000,
+    insurance: 1700000,
+    bonus: 1500000,
+  },
+  lm: {
+    name: "Lê Minh",
+    initials: "LM",
+    role: "Content Executive · Marketing",
+    base: 16000000,
+    allowance: 1900000,
+    insurance: 1200000,
+    bonus: 600000,
+  },
+  pt: {
+    name: "Phạm Thảo",
+    initials: "PT",
+    role: "Talent Acquisition · Nhân sự",
+    base: 17800000,
+    allowance: 2300000,
+    insurance: 1300000,
+    bonus: 900000,
+  },
+};
+const attendanceStorageKey = "peoplehub:salary-attendance:2025-06:v1";
+const salaryCurrency = new Intl.NumberFormat("vi-VN", {
+  style: "currency",
+  currency: "VND",
+  maximumFractionDigits: 0,
+});
+
+function estimateNetSalary(employee, attendanceDays) {
+  const proratedBase = Math.round((employee.base * attendanceDays) / 22);
+  return proratedBase + employee.allowance + employee.bonus - employee.insurance;
+}
+
+function parseAttendanceRecords(rawValue) {
+  if (rawValue === null) {
+    return {};
+  }
+
+  const parsedValue = JSON.parse(rawValue);
+  if (parsedValue === null || typeof parsedValue !== "object" || Array.isArray(parsedValue)) {
+    throw new TypeError("Dữ liệu ngày công đã lưu không đúng định dạng.");
+  }
+
+  Object.entries(parsedValue).forEach(([employeeId, days]) => {
+    if (!Object.hasOwn(salaryRecords, employeeId) || !Number.isInteger(days) || days < 0 || days > 22) {
+      throw new TypeError("Dữ liệu ngày công đã lưu có giá trị không hợp lệ.");
+    }
+  });
+
+  return parsedValue;
+}
+
+function initializePayrollEstimates() {
+  const table = document.querySelector("[data-payroll-table]");
+  if (!table) {
+    return;
+  }
+
+  const status = document.querySelector("[data-payroll-estimate-status]");
+  let savedAttendance = {};
+  try {
+    savedAttendance = parseAttendanceRecords(localStorage.getItem(attendanceStorageKey));
+  } catch (error) {
+    console.error("Không thể đọc ngày công đã lưu để cập nhật bảng lương.", error);
+    status.textContent = "Không đọc được ngày công đã lưu; bảng đang dùng mức mặc định 22 ngày cho phần ước tính.";
+  }
+
+  table.querySelectorAll("[data-payroll-employee]").forEach((row) => {
+    const employeeId = row.dataset.payrollEmployee;
+    const employee = salaryRecords[employeeId];
+    const estimateCell = row.querySelector("[data-payroll-estimate]");
+    if (!employee || !estimateCell) {
+      console.error("Không thể cập nhật ước tính lương: thiếu hồ sơ hoặc ô tổng nhận.");
+      return;
+    }
+
+    const attendanceDays = savedAttendance[employeeId] ?? 22;
+    estimateCell.textContent = salaryCurrency.format(estimateNetSalary(employee, attendanceDays));
+  });
+
+  if (!status.textContent) {
+    status.textContent = "Thu nhập ước tính được tính theo ngày công đã lưu; mặc định 22 ngày nếu chưa cập nhật.";
+  }
+}
+
+function initializeSalaryDetail() {
+  const detail = document.querySelector("[data-salary-detail]");
+  if (!detail) {
+    return;
+  }
+
+  const employeeId = new URLSearchParams(window.location.search).get("employee");
+  const employee = Object.hasOwn(salaryRecords, employeeId) ? salaryRecords[employeeId] : null;
+  const errorMessage = document.querySelector("[data-salary-error]");
+  if (!employee) {
+    detail.hidden = true;
+    errorMessage.hidden = false;
+    errorMessage.textContent = "Không tìm thấy nhân viên trong dữ liệu lương minh họa.";
+    return;
+  }
+
+  detail.querySelector("[data-employee-name]").textContent = employee.name;
+  detail.querySelector("[data-employee-initials]").textContent = employee.initials;
+  detail.querySelector("[data-employee-role]").textContent = employee.role;
+  detail.querySelector("[data-salary-base]").textContent = salaryCurrency.format(employee.base);
+  detail.querySelector("[data-salary-allowance]").textContent = salaryCurrency.format(employee.allowance);
+  detail.querySelector("[data-salary-insurance]").textContent = `− ${salaryCurrency.format(employee.insurance)}`;
+  detail.querySelector("[data-salary-bonus]").textContent = salaryCurrency.format(employee.bonus);
+
+  const form = detail.querySelector("[data-attendance-form]");
+  const daysInput = form.elements.attendanceDays;
+  const saveButton = form.querySelector("[data-save-attendance]");
+  const status = form.querySelector("[data-attendance-status]");
+  const totalOutput = detail.querySelector("[data-salary-total]");
+  const daysOutput = detail.querySelector("[data-salary-days]");
+  let savedAttendance;
+  let storageAvailable = true;
+
+  try {
+    savedAttendance = parseAttendanceRecords(localStorage.getItem(attendanceStorageKey));
+  } catch (error) {
+    storageAvailable = false;
+    console.error("Không thể đọc ngày công đã lưu.", error);
+    status.textContent = "Không đọc được dữ liệu ngày công đã lưu. Hãy kiểm tra bộ nhớ trình duyệt trước khi tiếp tục.";
+  }
+
+  const initialDays = storageAvailable ? (savedAttendance[employeeId] ?? 22) : 22;
+  daysInput.value = String(initialDays);
+  saveButton.disabled = !storageAvailable;
+
+  function updateEstimate(showValidationMessage = false) {
+    if (!daysInput.validity.valid || daysInput.value === "") {
+      totalOutput.textContent = "—";
+      daysOutput.textContent = "—";
+      if (showValidationMessage) {
+        status.textContent = "Nhập số ngày công nguyên từ 0 đến 22.";
+      }
+      return false;
+    }
+
+    const days = Number(daysInput.value);
+    const estimate = estimateNetSalary(employee, days);
+
+    daysOutput.textContent = `${days} / 22 ngày`;
+    totalOutput.textContent = salaryCurrency.format(estimate);
+    if (showValidationMessage) {
+      status.textContent = "Bản xem trước đã cập nhật. Nhấn “Lưu ngày công” để lưu trong trình duyệt này.";
+    }
+    return true;
+  }
+
+  daysInput.addEventListener("input", () => updateEstimate(true));
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!updateEstimate(true) || !storageAvailable) {
+      if (!storageAvailable) {
+        status.textContent = "Không thể lưu vì dữ liệu ngày công hiện có không đọc được.";
+      }
+      return;
+    }
+
+    const updatedAttendance = {
+      ...savedAttendance,
+      [employeeId]: Number(daysInput.value),
+    };
+
+    try {
+      localStorage.setItem(attendanceStorageKey, JSON.stringify(updatedAttendance));
+      savedAttendance = updatedAttendance;
+      status.textContent = `Đã lưu ${daysInput.value} ngày công trên trình duyệt này.`;
+    } catch (error) {
+      console.error("Không thể lưu ngày công.", error);
+      status.textContent = "Không thể lưu ngày công. Kiểm tra quyền truy cập bộ nhớ của trình duyệt rồi thử lại.";
+    }
+  });
+
+  updateEstimate();
+}
+
+initializePayrollEstimates();
+initializeSalaryDetail();
+
 const loginForm = document.querySelector("[data-login-form]");
 loginForm?.addEventListener("submit", (event) => {
   event.preventDefault();

@@ -15,28 +15,28 @@
   --color-surface-muted: #fafafd;
   --color-surface-glass: rgba(255, 255, 255, 0.78);
   --color-text: #25263a;
-  --color-text-secondary: #66697e;
-  --color-text-muted: #74778b;
-  --color-text-faint: #6f7285;
-  --color-border: #ececf2;
-  --color-border-soft: #f1f1f5;
-  --color-primary: #7267e9;
-  --color-primary-hover: #6156d7;
-  --color-primary-strong: #6459d7;
+  --color-text-secondary: #50536a;
+  --color-text-muted: #5d6077;
+  --color-text-faint: #65687d;
+  --color-border: #e4e6f0;
+  --color-border-soft: #eceef5;
+  --color-primary: #5f53cf;
+  --color-primary-hover: #5145bd;
+  --color-primary-strong: #5145bd;
   --color-primary-soft: #f0efff;
   --color-primary-pale: #faf9ff;
   --color-lavender: #8c80ee;
   --color-lavender-light: #bcb5fa;
   --color-lavender-pale: #e5e3fb;
   --color-success: #48b894;
-  --color-success-strong: #3da77e;
+  --color-success-strong: #287a5c;
   --color-success-soft: #eaf8f1;
   --color-warning: #f0a36e;
-  --color-warning-strong: #d99350;
+  --color-warning-strong: #94601d;
   --color-warning-soft: #fff4e8;
-  --color-danger: #df8277;
+  --color-danger: #a94d46;
   --color-danger-soft: #fff0ed;
-  --color-info: #7aa8e7;
+  --color-info: #4c78b2;
   --color-info-soft: #e8f2ff;
   --color-rose: #df8cb1;
   --color-alert: #ef887e;
@@ -54,7 +54,7 @@
   --color-shadow: #30305205;
   --color-shadow-primary: #7065e826;
   --color-focus: #aaa4ff;
-  --purple: #7267e9;
+  --purple: #5f53cf;
 }
 
 * {
@@ -2503,4 +2503,579 @@ body {
 
 .test-fail {
   color: #b94949;
+}
+
+:root {
+  --radius-control: 10px;
+  --radius-panel: 16px;
+  --shadow-panel: 0 10px 28px rgba(55, 63, 112, 0.07);
+  --shadow-panel-hover: 0 16px 34px rgba(55, 63, 112, 0.12);
+  --color-focus: #5548c7;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(140, 128, 238, 0.1), transparent 34%),
+    radial-gradient(ellipse at 95% 16%, rgba(122, 168, 231, 0.09), transparent 30%),
+    var(--color-canvas);
+}
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 8px 0 28px rgba(55, 63, 112, 0.035);
+}
+
+.topbar {
+  background: rgba(250, 250, 255, 0.9);
+  border-bottom-color: rgba(220, 222, 237, 0.9);
+}
+
+.feature-strip,
+.stat-card,
+.panel,
+.summary-card,
+.module-card,
+.login-card,
+.auth-metric {
+  border-color: rgba(220, 222, 237, 0.92);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(12px);
+}
+
+.feature-strip {
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.module-card {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.auth-hero-panel {
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.panel,
+.stat-card,
+.summary-card,
+.feature-strip,
+.module-card,
+.login-card {
+  border-radius: var(--radius-panel);
+}
+
+.module-card,
+.summary-card,
+.stat-card,
+.secondary-button,
+.action-button,
+.page-button,
+.icon-button,
+.table-search input,
+.table-control select {
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.module-card:hover,
+.summary-card:hover,
+.stat-card:hover {
+  border-color: rgba(95, 83, 207, 0.28);
+  box-shadow: var(--shadow-panel-hover);
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content > .welcome-row {
+  order: 0;
+}
+
+.dashboard-content > .stats-grid {
+  order: 1;
+}
+
+.dashboard-content > .dashboard-grid {
+  order: 2;
+  margin-bottom: 18px;
+}
+
+.dashboard-content > .feature-strip {
+  order: 3;
+}
+
+.dashboard-content > .info-grid {
+  order: 4;
+}
+
+.dashboard-content > .page-footer {
+  order: 5;
+}
+
+.dashboard-grid {
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+  grid-template-areas:
+    "leave attendance"
+    "departments departments"
+    "employees employees";
+  gap: 16px;
+}
+
+.leave-panel {
+  grid-area: leave;
+  grid-column: auto;
+  grid-row: auto;
+  border-top: 3px solid var(--color-primary);
+}
+
+.attendance-panel {
+  grid-area: attendance;
+}
+
+.departments-panel {
+  grid-area: departments;
+}
+
+.employees-panel {
+  grid-area: employees;
+  grid-column: auto;
+}
+
+.department-list {
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 16px;
+}
+
+.request-count {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  font-size: 11px;
+}
+
+.stat-label {
+  font-size: 13px;
+}
+
+.stat-change {
+  font-size: 11px;
+}
+
+.stat-caption,
+.chart-legend,
+.bar-group,
+.department-total span,
+.department-meta,
+.department-meta strong,
+.department-meta small {
+  font-size: 12px;
+}
+
+.chart-y-labels {
+  font-size: 10px;
+}
+
+.module-card h3 {
+  font-size: 15px;
+}
+
+.module-card ul {
+  font-size: 12px;
+}
+
+.announcement-item strong,
+.event-copy strong {
+  font-size: 13px;
+}
+
+.announcement-item small,
+.event-copy small,
+.event-date span {
+  font-size: 11px;
+}
+
+.leave-person strong {
+  font-size: 13px;
+}
+
+.leave-person span,
+.leave-person small,
+.leave-days,
+.leave-all-link,
+.small-button {
+  font-size: 12px;
+}
+
+.auth-metric span,
+.form-field label,
+.form-row,
+.login-meta {
+  font-size: 12px;
+}
+
+.login-card > p {
+  font-size: 14px;
+}
+
+.data-table th,
+.data-table td {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(240, 239, 255, 0.55);
+}
+
+.summary-number {
+  flex-wrap: wrap;
+  font-size: clamp(17px, 1.8vw, 24px);
+}
+
+.data-table-wrapper:focus-visible,
+.table-wrap:focus-visible {
+  outline: 3px solid rgba(95, 83, 207, 0.45);
+  outline-offset: 2px;
+}
+
+.secondary-button,
+.action-button,
+.page-button,
+.icon-button {
+  border-radius: var(--radius-control);
+}
+
+.nav-link:focus-visible,
+.primary-button:focus-visible,
+.secondary-button:focus-visible,
+.action-button:focus-visible,
+.page-button:focus-visible,
+.leave-all-link:focus-visible,
+.icon-button:focus-visible {
+  outline: 3px solid rgba(95, 83, 207, 0.45);
+  outline-offset: 3px;
+}
+
+.table-search input:focus-visible,
+.table-control select:focus-visible,
+.form-field input:focus-visible {
+  border-color: var(--color-primary);
+  outline-color: rgba(95, 83, 207, 0.4);
+}
+
+@media (max-width: 1120px) {
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "leave"
+      "attendance"
+      "departments"
+      "employees";
+  }
+
+  .leave-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .leave-item {
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+}
+
+@media (max-width: 650px) {
+  .page-content {
+    padding: 22px 16px 16px;
+  }
+
+  .welcome-row {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .welcome-copy {
+    max-width: 100%;
+    font-size: 13px;
+  }
+
+  .primary-button {
+    min-height: 42px;
+    padding: 0 13px;
+    font-size: 12px;
+  }
+
+  .nav-link,
+  .nav-link.is-active {
+    min-height: 50px;
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  .page-footer {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav-link,
+  .nav-link.is-active {
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .module-card,
+  .summary-card,
+  .stat-card,
+  .secondary-button,
+  .action-button,
+  .page-button,
+  .icon-button {
+    transition: none;
+  }
+}
+
+.demo-notice {
+  margin: 0 0 18px;
+  padding: 12px 15px;
+  border: 1px solid #e9d9ae;
+  border-radius: var(--radius-control);
+  background: #fff9e9;
+  color: #684d19;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.salary-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.salary-detail-grid[hidden] {
+  display: none;
+}
+
+.salary-employee-card,
+.attendance-form-panel {
+  padding: 22px;
+}
+
+.salary-employee-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.salary-avatar {
+  width: 54px;
+  height: 54px;
+  font-size: 15px;
+}
+
+.salary-employee-heading h2,
+.attendance-form-panel .panel-heading h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.salary-employee-heading p,
+.attendance-form-panel .panel-heading p {
+  margin: 4px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.salary-period {
+  display: inline-block;
+  margin-top: 7px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.salary-section-title {
+  margin: 20px 0 8px;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 15px;
+}
+
+.salary-breakdown {
+  margin: 0;
+}
+
+.salary-breakdown > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.salary-breakdown dt {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.salary-breakdown dd {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.salary-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(95, 83, 207, 0.18);
+  border-radius: 12px;
+  background: var(--color-primary-soft);
+}
+
+.salary-total span {
+  color: var(--color-primary-strong);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.salary-total strong {
+  color: var(--color-primary-strong);
+  font-family: var(--font-heading);
+  font-size: clamp(17px, 2vw, 23px);
+  text-align: right;
+}
+
+.salary-formula,
+.salary-demo-disclaimer {
+  margin: 13px 0 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.attendance-form {
+  margin-top: 22px;
+}
+
+.attendance-input-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.attendance-input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.attendance-input-row input {
+  width: min(150px, 45%);
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.attendance-input-row input:focus-visible {
+  border-color: var(--color-primary);
+  outline: 3px solid rgba(95, 83, 207, 0.35);
+  outline-offset: 2px;
+}
+
+.attendance-input-row span,
+.attendance-field-help {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.attendance-field-help {
+  margin: 8px 0 0;
+}
+
+.attendance-save-button {
+  margin-top: 16px;
+}
+
+.attendance-form-status {
+  min-height: 22px;
+  margin: 12px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.salary-demo-disclaimer {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.salary-detail-error {
+  padding: 16px;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.attendance-save-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 900px) {
+  .salary-detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .salary-employee-card,
+  .attendance-form-panel {
+    padding: 17px;
+  }
+
+  .salary-breakdown > div {
+    gap: 10px;
+  }
+
+  .salary-breakdown dt,
+  .salary-breakdown dd {
+    font-size: 12px;
+  }
+
+  .salary-total {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .salary-total strong {
+    text-align: left;
+  }
 }
