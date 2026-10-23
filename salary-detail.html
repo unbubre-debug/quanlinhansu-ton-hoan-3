@@ -109,13 +109,39 @@
               <p class="salary-formula">
                 Công thức demo: lương cơ bản × ngày công / 22 + phụ cấp + thưởng − bảo hiểm.
               </p>
+              <section class="new-employee-salary-setup" data-custom-salary-panel hidden aria-labelledby="custom-salary-title">
+                <div>
+                  <h3 id="custom-salary-title">Thiết lập lương nhân viên</h3>
+                  <p>Thiết lập sau khi tạo hồ sơ. Thu nhập ước tính sẽ dựa trên mức lương và ngày công đã quét QR.</p>
+                </div>
+                <form class="custom-salary-form" data-custom-salary-form>
+                  <label>
+                    <span>Lương cơ bản / tháng</span>
+                    <input name="base" type="number" required min="0" step="1000" inputmode="numeric">
+                  </label>
+                  <label>
+                    <span>Phụ cấp</span>
+                    <input name="allowance" type="number" required min="0" step="1000" value="0" inputmode="numeric">
+                  </label>
+                  <label>
+                    <span>Bảo hiểm</span>
+                    <input name="insurance" type="number" required min="0" step="1000" value="0" inputmode="numeric">
+                  </label>
+                  <label>
+                    <span>Thưởng</span>
+                    <input name="bonus" type="number" required min="0" step="1000" value="0" inputmode="numeric">
+                  </label>
+                  <p data-custom-salary-status role="status" aria-live="polite"></p>
+                  <button class="action-button primary" type="submit">Lưu thông tin lương</button>
+                </form>
+              </section>
             </article>
 
             <article class="panel attendance-form-panel">
               <div class="panel-heading">
                 <div>
-                  <h2>Cập nhật ngày công</h2>
-                  <p>Tháng 06/2025 · tối đa 22 ngày công chuẩn</p>
+                  <h2>Ngày công kỳ lương</h2>
+                  <p>Ngày công nhân viên mới được tự động ghi nhận bằng QR.</p>
                 </div>
               </div>
               <form class="attendance-form" data-attendance-form novalidate>

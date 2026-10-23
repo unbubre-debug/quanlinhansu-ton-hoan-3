@@ -74,15 +74,10 @@
             <div>
               <p class="overline">QUẢN LÝ HỒ SƠ NHÂN SỰ</p>
               <h1 id="page-title">Danh sách nhân viên</h1>
-              <p class="page-subtitle">Quy mô công ty: 20 hồ sơ trong bộ dữ liệu demo. Chưa kết nối nguồn nhân sự thực tế.</p>
+              <p class="page-subtitle">Quản lý hồ sơ, phòng ban và thông tin công việc trong không gian nhân sự của bạn.</p>
             </div>
             <div class="toolbar-actions">
-              <button
-                class="action-button primary"
-                type="button"
-                disabled
-                title="Chức năng cần kết nối với hệ thống quản lý nhân sự."
-              >+ Thêm nhân viên</button>
+              <button class="action-button primary" type="button" data-open-add-employee>+ Thêm nhân viên</button>
             </div>
           </section>
 
@@ -109,7 +104,8 @@
             <div class="data-header">
               <div>
                 <h2 id="employees-table-title">Nhân sự mới & hiện tại</h2>
-                <p class="page-subtitle"><span data-directory-count>20</span> nhân viên trong bộ dữ liệu demo; chưa đồng bộ với hệ thống nhân sự thật.</p>
+                <p class="page-subtitle"><span data-directory-count>20</span> hồ sơ nhân viên · dữ liệu bổ sung lưu trên trình duyệt này.</p>
+                <p class="employee-directory-status" data-directory-save-status role="status" aria-live="polite"></p>
               </div>
             </div>
 
@@ -238,6 +234,72 @@
         </div>
       </section>
       <p class="profile-demo-note" data-profile-status role="status">Dữ liệu chỉ mang tính minh họa, không phải bảng chấm công hoặc bảng lương chính thức.</p>
+    </dialog>
+    <dialog class="employee-create-dialog" data-employee-create-dialog aria-labelledby="employee-create-title">
+      <div class="profile-dialog-heading">
+        <div>
+          <p class="overline">HỒ SƠ NHÂN SỰ · NOVA CREATIVE</p>
+          <h2 id="employee-create-title">Thêm nhân viên mới</h2>
+        </div>
+        <button class="profile-dialog-close" type="button" data-close-add-employee aria-label="Đóng biểu mẫu">×</button>
+      </div>
+      <p class="employee-create-intro">Chỉ cần nhập hồ sơ nhân viên. Chấm công sẽ ghi nhận qua mã QR; lương được tính theo thông tin lương và ngày công khi có dữ liệu.</p>
+      <form class="employee-create-form" data-employee-create-form>
+        <div class="employee-create-grid">
+          <label class="employee-create-field">
+            <span>Họ và tên <b aria-hidden="true">*</b></span>
+            <input name="name" required maxlength="80" autocomplete="name" placeholder="Ví dụ: Nguyễn Minh Anh">
+          </label>
+          <label class="employee-create-field">
+            <span>Email công việc <b aria-hidden="true">*</b></span>
+            <input name="email" type="email" required maxlength="120" autocomplete="email" placeholder="ten@nova.vn">
+          </label>
+          <label class="employee-create-field">
+            <span>Chức vụ <b aria-hidden="true">*</b></span>
+            <input name="role" required maxlength="80" placeholder="Ví dụ: UI/UX Designer">
+          </label>
+          <label class="employee-create-field">
+            <span>Phòng ban <b aria-hidden="true">*</b></span>
+            <select name="department" required>
+              <option value="">Chọn phòng ban</option>
+              <option>Thiết kế</option>
+              <option>Công nghệ</option>
+              <option>Marketing</option>
+              <option>Nhân sự</option>
+              <option>Vận hành</option>
+            </select>
+          </label>
+          <label class="employee-create-field">
+            <span>Ngày bắt đầu <b aria-hidden="true">*</b></span>
+            <input name="start" type="date" required>
+          </label>
+          <label class="employee-create-field">
+            <span>Quản lý trực tiếp</span>
+            <input name="manager" maxlength="80" placeholder="Ví dụ: Minh Linh">
+          </label>
+          <label class="employee-create-field">
+            <span>Trạng thái</span>
+            <select name="employment">
+              <option value="active">Đang làm việc</option>
+              <option value="onboarding">Đang hội nhập</option>
+              <option value="leave">Đang nghỉ phép</option>
+            </select>
+          </label>
+          <label class="employee-create-field">
+            <span>Hình thức làm việc</span>
+            <select name="workMode">
+              <option value="office">Tại văn phòng</option>
+              <option value="remote">Làm từ xa</option>
+            </select>
+          </label>
+        </div>
+        <p class="employee-create-note" role="note">Hồ sơ lưu trong trình duyệt này. Nhân viên mới bắt đầu với trạng thái chưa chấm công và chưa thiết lập lương.</p>
+        <p class="employee-create-status" data-employee-create-status role="status" aria-live="polite"></p>
+        <div class="employee-create-actions">
+          <button class="action-button" type="button" data-cancel-add-employee>Hủy</button>
+          <button class="action-button primary" type="submit">Lưu hồ sơ nhân viên</button>
+        </div>
+      </form>
     </dialog>
   </body>
 </html>

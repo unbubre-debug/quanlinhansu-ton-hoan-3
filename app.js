@@ -9,6 +9,7 @@ const normalizeText = (value) =>
 const attendanceStorageKey = "peoplehub:salary-attendance:2025-06:v1";
 const qrAttendanceStorageKey = "peoplehub:qr-attendance:demo:v1";
 const employeeMessageStorageKey = "peoplehub:employee-messages:demo:v1";
+const customEmployeeStorageKey = "peoplehub:employees:demo:v1";
 const demoAttendanceQrCode = "PEOPLEHUB-DEMO-ATTENDANCE-2026";
 const activeEmployeeKey = "peoplehub:auth:employee";
 const rememberedEmployeeKey = "peoplehub:auth:remembered-employee";
@@ -17,6 +18,40 @@ const salaryCurrency = new Intl.NumberFormat("vi-VN", {
   currency: "VND",
   maximumFractionDigits: 0,
 });
+function parseCustomEmployeeRecords(rawValue) {
+  if (rawValue === null) {
+    return [];
+  }
+  const records = JSON.parse(rawValue);
+  if (!Array.isArray(records)) {
+    throw new TypeError("Danh sách nhân viên đã lưu không đúng định dạng.");
+  }
+  records.forEach((employee) => {
+    if (
+      !employee ||
+      typeof employee.id !== "string" ||
+      !/^nv-\d{3,}$/.test(employee.id) ||
+      typeof employee.name !== "string" ||
+      !employee.name.trim() ||
+      typeof employee.email !== "string" ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(employee.email) ||
+      typeof employee.role !== "string" ||
+      !employee.role.trim() ||
+      typeof employee.department !== "string" ||
+      !employee.department.trim() ||
+      !/^\d{2}\/\d{2}\/\d{4}$/.test(employee.start) ||
+      !["active", "onboarding", "leave"].includes(employee.employment) ||
+      !["office", "remote"].includes(employee.workMode) ||
+      ![employee.base, employee.allowance, employee.insurance, employee.bonus, employee.days].every(
+        (value) => Number.isSafeInteger(value) && value >= 0,
+      )
+    ) {
+      throw new TypeError("Hồ sơ nhân viên đã lưu có dữ liệu không hợp lệ.");
+    }
+  });
+  return records;
+}
+
 const employeeRecords = [
   { id: "hn", name: "Hoàng Ngọc", initials: "HN", email: "ngoc.hoang@example.com", role: "Product Designer", department: "Thiết kế", specialty: "Thiết kế UI/UX, nghiên cứu người dùng, Figma", start: "24/06/2025", employment: "active", manager: "Nhật Linh", workMode: "office", attendance: "ontime", days: 21, base: 18500000, allowance: 2100000, insurance: 1400000, bonus: 1000000, avatar: "coral", photo: "hoang-ngoc.svg" },
   { id: "ta", name: "Trần Anh", initials: "TA", email: "anh.tran@example.com", role: "Frontend Developer", department: "Công nghệ", specialty: "Phát triển giao diện web, JavaScript, tối ưu hiệu năng", start: "20/06/2025", employment: "active", manager: "Phúc Anh", workMode: "remote", attendance: "remote", days: 20, base: 22000000, allowance: 2800000, insurance: 1700000, bonus: 1500000, avatar: "blue", photo: "tran-anh.svg" },
@@ -39,6 +74,14 @@ const employeeRecords = [
   { id: "st", name: "Sơn Tùng", initials: "ST", email: "tung.son@example.com", role: "Business Operations Analyst", department: "Vận hành", specialty: "Phân tích dữ liệu và hiệu quả vận hành", start: "01/06/2022", employment: "active", manager: "Thu Hà", workMode: "remote", attendance: "remote", days: 20, base: 19500000, allowance: 1700000, insurance: 1460000, bonus: 900000, avatar: "violet" },
   { id: "th", name: "Thu Hà", initials: "TH", email: "ha.thu@example.com", role: "Operations Coordinator", department: "Vận hành", specialty: "Điều phối nguồn lực và hỗ trợ hoạt động công ty", start: "19/02/2021", employment: "leave", manager: "Minh Linh", workMode: "office", attendance: "leave", days: 0, base: 18000000, allowance: 1600000, insurance: 1350000, bonus: 700000, avatar: "violet" },
 ];
+let employeeStorageAvailable = true;
+try {
+  employeeRecords.push(...parseCustomEmployeeRecords(localStorage.getItem(customEmployeeStorageKey)));
+} catch (error) {
+  employeeStorageAvailable = false;
+  console.error("Không thể đọc hồ sơ nhân viên đã lưu.", error);
+}
+
 const employeeByCode = new Map();
 const duplicateEmployeeCodes = new Set();
 employeeRecords.forEach((employee) => {
@@ -195,14 +238,27 @@ function createEmployeeDirectoryRow(employee) {
   return row;
 }
 
-function createAttendanceRow(employee) {
-  const attendance = {
+function getAttendanceDetails(employee) {
+  return {
+    new: {
+      label: "Chưa chấm công",
+      badge: "neutral",
+      shift: employee.workMode === "remote" ? "Từ xa" : "Văn phòng",
+      timeIn: "—",
+      timeOut: "—",
+      overtime: "—",
+    },
     ontime: { label: "Đúng giờ", badge: "positive", shift: "Văn phòng", timeIn: "08:30", timeOut: "17:30", overtime: "0 giờ" },
     late: { label: "Đi muộn", badge: "warning", shift: "Văn phòng", timeIn: "08:48", timeOut: "17:30", overtime: "0 giờ" },
     remote: { label: "Làm từ xa", badge: "neutral", shift: "Từ xa", timeIn: "09:00", timeOut: "18:00", overtime: "0 giờ" },
     leave: { label: "Nghỉ phép", badge: "neutral", shift: "Nghỉ phép", timeIn: "—", timeOut: "—", overtime: "0 giờ" },
   }[employee.attendance];
+}
+
+function createAttendanceRow(employee) {
+  const attendance = getAttendanceDetails(employee);
   const row = document.createElement("tr");
+  row.dataset.attendanceEmployee = employee.id;
   row.append(createEmployeeCell(employee));
   [attendance.shift, attendance.timeIn, attendance.timeOut, attendance.overtime].forEach((value) => {
     const cell = document.createElement("td");
@@ -229,7 +285,10 @@ function createPayrollRow(employee) {
   estimateCell.textContent = salaryCurrency.format(estimateNetSalary(employee, employee.days));
   row.append(estimateCell);
   const statusCell = document.createElement("td");
-  statusCell.append(createStatusBadge("Ước tính demo", "neutral"));
+  const salaryConfigured = employee.base > 0;
+  statusCell.append(
+    createStatusBadge(salaryConfigured ? "Ước tính demo" : "Chưa thiết lập lương", salaryConfigured ? "neutral" : "warning"),
+  );
   row.append(statusCell);
   return row;
 }
@@ -249,10 +308,6 @@ function setSelectOptions(select, values) {
 }
 
 function initializeEmployeeData() {
-  if (employeeRecords.length !== 20) {
-    console.error(`Bộ dữ liệu demo cần đúng 20 nhân viên; hiện có ${employeeRecords.length}.`);
-  }
-
   document.querySelectorAll("[data-company-headcount]").forEach((output) => {
     output.textContent = String(employeeRecords.length);
   });
@@ -296,6 +351,16 @@ function initializeEmployeeData() {
   document.querySelectorAll("[data-working-today-share]").forEach((output) => {
     output.textContent = `${Math.round((workingToday / employeeRecords.length) * 100)}% tổng nhân sự`;
   });
+  ["onsite", "remote"].forEach((mode) => {
+    const count = attendanceCounts[mode];
+    const share = employeeRecords.length ? Math.round((count / employeeRecords.length) * 100) : 0;
+    document.querySelectorAll(`[data-attendance-count="${mode}"]`).forEach((output) => {
+      output.textContent = String(count);
+    });
+    document.querySelectorAll(`[data-attendance-share="${mode}"]`).forEach((output) => {
+      output.textContent = `${share}% tổng nhân sự`;
+    });
+  });
   document.querySelectorAll('[data-attendance-count="leave"]').forEach((output) => {
     output.textContent = String(attendanceCounts.leave);
   });
@@ -325,6 +390,84 @@ function initializeEmployeeData() {
 
 }
 
+function refreshEmployeeDirectorySummary() {
+  const total = employeeRecords.length;
+  document.querySelectorAll("[data-company-headcount], [data-directory-count], [data-payroll-total-count]").forEach((output) => {
+    output.textContent = String(total);
+  });
+  ["active", "onboarding", "leave"].forEach((employment) => {
+    const count = employeeRecords.filter((employee) => employee.employment === employment).length;
+    const share = total ? Math.round((count / total) * 100) : 0;
+    document.querySelectorAll(`[data-employment-count="${employment}"]`).forEach((output) => {
+      output.textContent = String(count);
+    });
+    document.querySelectorAll(`[data-employment-share="${employment}"]`).forEach((output) => {
+      output.textContent = `${share}%`;
+    });
+  });
+  document.querySelectorAll("[data-filter-departments]").forEach((select) => {
+    setSelectOptions(select, [...new Set(employeeRecords.map((employee) => employee.department))].sort(new Intl.Collator("vi").compare));
+  });
+  document.querySelectorAll("[data-filter-roles]").forEach((select) => {
+    setSelectOptions(select, [...new Set(employeeRecords.map((employee) => employee.role))].sort(new Intl.Collator("vi").compare));
+  });
+}
+
+function initializeDashboardConnections() {
+  const teamAvatars = document.querySelector("[data-dashboard-team-avatars]");
+  const qrCount = document.querySelector("[data-dashboard-qr-count]");
+  if (!teamAvatars && !qrCount) {
+    return;
+  }
+
+  if (teamAvatars) {
+    const visibleEmployees = employeeRecords.slice(0, 4);
+    const avatarElements = visibleEmployees.map((employee) => {
+      const portrait = document.createElement("img");
+      portrait.src = `anhnv/${employee.photo || "avatar-default.svg"}`;
+      portrait.alt = employee.name;
+      portrait.title = employee.name;
+      return portrait;
+    });
+    const remainingCount = employeeRecords.length - visibleEmployees.length;
+    if (remainingCount > 0) {
+      const allEmployeesLink = document.createElement("a");
+      allEmployeesLink.href = "employees.html";
+      allEmployeesLink.setAttribute("aria-label", `Xem ${remainingCount} nhân viên còn lại`);
+      allEmployeesLink.textContent = `+${remainingCount}`;
+      avatarElements.push(allEmployeesLink);
+    }
+    teamAvatars.replaceChildren(...avatarElements);
+  }
+
+  function updateQrAttendanceCount(rawValue = localStorage.getItem(qrAttendanceStorageKey)) {
+    if (!qrCount) {
+      return;
+    }
+    try {
+      const today = localDateKey();
+      const employeeIds = new Set(
+        parseQrAttendanceRecords(rawValue)
+          .filter((record) => record.date === today)
+          .map((record) => record.employeeId),
+      );
+      qrCount.textContent = String(employeeIds.size);
+    } catch (error) {
+      console.error("Không thể đọc lượt chấm công QR để cập nhật trang tổng quan.", error);
+      qrCount.textContent = "—";
+    }
+  }
+
+  updateQrAttendanceCount();
+  if (qrCount) {
+    window.addEventListener("storage", (event) => {
+      if (event.key === qrAttendanceStorageKey) {
+        updateQrAttendanceCount(event.newValue);
+      }
+    });
+  }
+}
+
 function initializeTableControls(controls) {
   const panel = controls.closest(".panel");
   const table = panel?.querySelector("table");
@@ -341,7 +484,6 @@ function initializeTableControls(controls) {
     return;
   }
 
-  const rows = Array.from(body.rows);
   const filters = Array.from(controls.querySelectorAll("[data-filter-column]"));
   const collator = new Intl.Collator("vi", { sensitivity: "base", numeric: true });
   const emptyRow = document.createElement("tr");
@@ -356,6 +498,7 @@ function initializeTableControls(controls) {
   body.append(emptyRow);
 
   function render() {
+    const rows = Array.from(body.rows).filter((row) => row !== emptyRow);
     const query = normalizeText(search.value);
     const activeFilters = filters.map((filter) => ({
       column: Number(filter.dataset.filterColumn),
@@ -460,11 +603,19 @@ function initializeTableControls(controls) {
   });
 
   render();
+  return render;
 }
 
 initializeEmployeeData();
 updateCurrentDates();
-document.querySelectorAll("[data-table-controls]").forEach(initializeTableControls);
+initializeDashboardConnections();
+const tableControlRefreshers = new WeakMap();
+document.querySelectorAll("[data-table-controls]").forEach((controls) => {
+  const refresh = initializeTableControls(controls);
+  if (refresh) {
+    tableControlRefreshers.set(controls, refresh);
+  }
+});
 
 function initializeEmployeeMessaging() {
   const dialog = document.querySelector("[data-employee-messages-dialog]");
@@ -718,15 +869,17 @@ function initializeEmployeeProfiles() {
     dialog.showModal();
   }
 
-  document.querySelectorAll("[data-employee-profile]").forEach((trigger) => {
-    trigger.addEventListener("click", () => {
-      const portraitImage = trigger.querySelector("img");
-      if (!portraitImage) {
-        console.error("Không tìm thấy ảnh thẻ cho hồ sơ nhân viên.");
-        return;
-      }
-      showProfile(trigger.dataset.employeeProfile, portraitImage.getAttribute("src"));
-    });
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest("[data-employee-profile]");
+    if (!trigger) {
+      return;
+    }
+    const portraitImage = trigger.querySelector("img");
+    if (!portraitImage) {
+      console.error("Không tìm thấy ảnh thẻ cho hồ sơ nhân viên.");
+      return;
+    }
+    showProfile(trigger.dataset.employeeProfile, portraitImage.getAttribute("src"));
   });
 
   closeButton.addEventListener("click", () => dialog.close());
@@ -740,6 +893,123 @@ function initializeEmployeeProfiles() {
     if (event.target === dialog) {
       dialog.close();
     }
+  });
+}
+
+function initializeEmployeeCreation() {
+  const dialog = document.querySelector("[data-employee-create-dialog]");
+  if (!dialog) {
+    return;
+  }
+  const openButton = document.querySelector("[data-open-add-employee]");
+  const closeButton = dialog.querySelector("[data-close-add-employee]");
+  const cancelButton = dialog.querySelector("[data-cancel-add-employee]");
+  const form = dialog.querySelector("[data-employee-create-form]");
+  const status = dialog.querySelector("[data-employee-create-status]");
+  const dateInput = form.elements.start;
+
+  function closeDialog() {
+    dialog.close();
+    form.reset();
+    dateInput.value = localDateKey();
+    status.textContent = "";
+  }
+
+  openButton.disabled = !employeeStorageAvailable;
+  if (!employeeStorageAvailable) {
+    status.textContent = "Không thể đọc dữ liệu đã lưu. Hãy bật bộ nhớ trình duyệt hoặc khắc phục dữ liệu trước khi thêm hồ sơ.";
+  }
+  dateInput.value = localDateKey();
+  openButton.addEventListener("click", () => dialog.showModal());
+  closeButton.addEventListener("click", closeDialog);
+  cancelButton.addEventListener("click", closeDialog);
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) {
+      closeDialog();
+    }
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!employeeStorageAvailable || !form.reportValidity()) {
+      return;
+    }
+
+    const formData = new FormData(form);
+    const name = String(formData.get("name")).trim().replace(/\s+/g, " ");
+    const email = String(formData.get("email")).trim().toLocaleLowerCase("vi");
+    const role = String(formData.get("role")).trim();
+    const department = String(formData.get("department"));
+    const start = String(formData.get("start"));
+    const employment = String(formData.get("employment"));
+    const workMode = String(formData.get("workMode"));
+    if (employeeRecords.some((employee) => employee.email.toLocaleLowerCase("vi") === email)) {
+      status.textContent = "Email này đã được sử dụng trong danh sách nhân viên.";
+      form.elements.email.focus();
+      return;
+    }
+
+    const nextEmployeeNumber = employeeRecords.length + 1;
+    const id = `nv-${String(nextEmployeeNumber).padStart(3, "0")}`;
+    if (employeeByCode.has(id.toLocaleUpperCase("vi"))) {
+      status.textContent = "Không thể tạo mã nhân viên duy nhất. Hãy tải lại trang rồi thử lại.";
+      return;
+    }
+    const nameParts = name.split(" ");
+    const initials = (nameParts.length > 1
+      ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`
+      : name.slice(0, 2)
+    ).toLocaleUpperCase("vi");
+    const [year, month, day] = start.split("-");
+    const avatarColors = ["coral", "blue", "yellow", "green", "violet"];
+    const employee = {
+      id,
+      name,
+      initials,
+      email,
+      role,
+      department,
+      specialty: `${role} · ${department}`,
+      start: `${day}/${month}/${year}`,
+      employment,
+      manager: String(formData.get("manager")).trim() || "Chưa phân công",
+      workMode,
+      attendance: employment === "leave" ? "leave" : "new",
+      days: 0,
+      base: 0,
+      allowance: 0,
+      insurance: 0,
+      bonus: 0,
+      avatar: avatarColors[(nextEmployeeNumber - 1) % avatarColors.length],
+    };
+
+    try {
+      const savedEmployees = parseCustomEmployeeRecords(localStorage.getItem(customEmployeeStorageKey));
+      localStorage.setItem(customEmployeeStorageKey, JSON.stringify([...savedEmployees, employee]));
+    } catch (error) {
+      console.error("Không thể lưu hồ sơ nhân viên mới.", error);
+      status.textContent = "Không thể lưu hồ sơ. Hãy kiểm tra dung lượng và quyền lưu trữ của trình duyệt rồi thử lại.";
+      return;
+    }
+
+    employeeRecords.push(employee);
+    employeeByCode.set(id.toLocaleUpperCase("vi"), employee);
+    salaryRecords[id] = {
+      ...employee,
+      role: `${employee.role} · ${employee.department}`,
+      attendanceDays: employee.days,
+    };
+    const directory = document.querySelector("[data-employee-directory]");
+    directory?.insertBefore(createEmployeeDirectoryRow(employee), directory.querySelector(".table-empty-row"));
+    refreshEmployeeDirectorySummary();
+    const tableControls = document.querySelector("[data-table-controls]");
+    tableControlRefreshers.get(tableControls)?.();
+    closeDialog();
+    const successStatus = document.querySelector("[data-directory-save-status]");
+    if (successStatus) {
+      successStatus.textContent = `Đã thêm ${employee.name} · mã nhân viên ${id.toUpperCase()}.`;
+    }
+    document.querySelector("[data-open-add-employee]").focus();
   });
 }
 
@@ -784,17 +1054,26 @@ function parseQrAttendanceRecords(rawValue) {
     throw new TypeError("Dữ liệu lượt quét QR không đúng định dạng.");
   }
 
-  records.forEach((record) => {
+  return records.map((record) => {
     if (
       !record ||
       !Object.hasOwn(salaryRecords, record.employeeId) ||
       !/^\d{4}-\d{2}-\d{2}$/.test(record.date) ||
-      !Number.isFinite(Date.parse(record.checkedAt))
+      !Number.isFinite(Date.parse(record.checkinAt ?? record.checkedAt)) ||
+      (record.checkoutAt !== null &&
+        record.checkoutAt !== undefined &&
+        (!Number.isFinite(Date.parse(record.checkoutAt)) ||
+          Date.parse(record.checkoutAt) < Date.parse(record.checkinAt ?? record.checkedAt)))
     ) {
       throw new TypeError("Dữ liệu lượt quét QR có bản ghi không hợp lệ.");
     }
+    return {
+      employeeId: record.employeeId,
+      date: record.date,
+      checkinAt: record.checkinAt ?? record.checkedAt,
+      checkoutAt: record.checkoutAt ?? null,
+    };
   });
-  return records;
 }
 
 function initializeQrAttendance() {
@@ -873,21 +1152,60 @@ function initializeQrAttendance() {
     stopButton.hidden = true;
   }
 
+  function formatTime(value) {
+    return value
+      ? new Intl.DateTimeFormat("vi-VN", { hour: "2-digit", minute: "2-digit" }).format(new Date(value))
+      : "—";
+  }
+
+  function formatWorkDuration(record) {
+    if (!record?.checkinAt) {
+      return "—";
+    }
+    const endTime = record.checkoutAt ? Date.parse(record.checkoutAt) : Date.now();
+    const totalMinutes = Math.max(0, Math.floor((endTime - Date.parse(record.checkinAt)) / 60000));
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return hours ? `${hours} giờ ${minutes} phút` : `${minutes} phút`;
+  }
+
+  function renderAttendanceTable(records) {
+    const recordsByEmployee = new Map(
+      records.filter((record) => record.date === localDateKey()).map((record) => [record.employeeId, record]),
+    );
+    document.querySelectorAll("[data-attendance-employee]").forEach((row) => {
+      const employeeRecord = employeeRecords.find((entry) => entry.id === row.dataset.attendanceEmployee);
+      const defaultAttendance = employeeRecord && getAttendanceDetails(employeeRecord);
+      const record = recordsByEmployee.get(row.dataset.attendanceEmployee);
+      if (!defaultAttendance) {
+        return;
+      }
+      row.cells[2].textContent = record ? formatTime(record.checkinAt) : defaultAttendance.timeIn;
+      row.cells[3].textContent = record ? formatTime(record.checkoutAt) : defaultAttendance.timeOut;
+      row.cells[5].replaceChildren(
+        record
+          ? createStatusBadge(record.checkoutAt ? "Đã ra" : "Đang làm", record.checkoutAt ? "positive" : "warning")
+          : createStatusBadge(defaultAttendance.label, defaultAttendance.badge),
+      );
+    });
+  }
+
   function renderCheckins(records) {
     const today = localDateKey();
     const todaysRecords = records
       .filter((record) => record.date === today)
-      .sort((first, second) => second.checkedAt.localeCompare(first.checkedAt));
+      .sort((first, second) => second.checkinAt.localeCompare(first.checkinAt));
     checkinBody.replaceChildren();
 
     if (todaysRecords.length === 0) {
       const row = document.createElement("tr");
       const cell = document.createElement("td");
       row.className = "table-empty-row";
-      cell.colSpan = 4;
+      cell.colSpan = 6;
       cell.textContent = "Chưa có lượt quét QR nào hôm nay.";
       row.append(cell);
       checkinBody.append(row);
+      renderAttendanceTable(records);
       return;
     }
 
@@ -896,18 +1214,24 @@ function initializeQrAttendance() {
       const row = document.createElement("tr");
       const name = document.createElement("td");
       const id = document.createElement("td");
-      const time = document.createElement("td");
+      const checkin = document.createElement("td");
+      const checkout = document.createElement("td");
+      const duration = document.createElement("td");
       const status = document.createElement("td");
+      if (!loggedEmployee) {
+        console.error(`Không tìm thấy hồ sơ nhân viên "${record.employeeId}" để hiển thị lượt quét QR.`);
+        return;
+      }
       name.textContent = loggedEmployee.name;
       id.textContent = loggedEmployee.id.toUpperCase();
-      time.textContent = new Intl.DateTimeFormat("vi-VN", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(new Date(record.checkedAt));
-      status.textContent = "Đã điểm danh";
-      row.append(name, id, time, status);
+      checkin.textContent = formatTime(record.checkinAt);
+      checkout.textContent = formatTime(record.checkoutAt);
+      duration.textContent = formatWorkDuration(record);
+      status.textContent = record.checkoutAt ? "Đã ra" : "Đang làm";
+      row.append(name, id, checkin, checkout, duration, status);
       checkinBody.append(row);
     });
+    renderAttendanceTable(records);
   }
 
   function recordQrAttendance(qrValue) {
@@ -934,25 +1258,37 @@ function initializeQrAttendance() {
       const savedAttendance = parseAttendanceRecords(previousAttendanceValue);
       const rawRecords = localStorage.getItem(qrAttendanceStorageKey);
       const existingRecords = parseQrAttendanceRecords(rawRecords);
-      const alreadyCheckedIn = existingRecords.some(
+      const todayRecordIndex = existingRecords.findIndex(
         (record) => record.employeeId === employee.id && record.date === today,
       );
-      if (alreadyCheckedIn) {
-        scanStatus.textContent = `Hôm nay ${employee.name} đã điểm danh rồi. Mỗi nhân viên chỉ ghi nhận một lần mỗi ngày.`;
-        renderCheckins(existingRecords);
+      const now = new Date().toISOString();
+      if (todayRecordIndex >= 0) {
+        const todayRecord = existingRecords[todayRecordIndex];
+        if (todayRecord.checkoutAt) {
+          scanStatus.textContent = `Hôm nay ${employee.name} đã ghi nhận cả giờ vào và giờ ra.`;
+          renderCheckins(existingRecords);
+          return;
+        }
+        updatedRecords = existingRecords.map((record, index) =>
+          index === todayRecordIndex ? { ...record, checkoutAt: now } : record,
+        );
+        localStorage.setItem(qrAttendanceStorageKey, JSON.stringify(updatedRecords));
+        storedRecords = updatedRecords;
+        renderCheckins(storedRecords);
+        scanStatus.textContent = `Đã ghi nhận giờ ra lúc ${formatTime(now)}. Tổng thời gian làm hôm nay: ${formatWorkDuration(updatedRecords[todayRecordIndex])}.`;
         return;
       }
 
       const currentDays = savedAttendance[employee.id] ?? salaryRecords[employee.id].attendanceDays;
       if (currentDays >= 22) {
-        scanStatus.textContent = "Ngày công demo đã đạt tối đa 22 ngày cho kỳ lương này; không thể cộng thêm.";
+        scanStatus.textContent = "Ngày công demo đã đạt tối đa 22 ngày cho kỳ lương này; không thể ghi nhận giờ vào.";
         return;
       }
 
       updatedAttendance = { ...savedAttendance, [employee.id]: currentDays + 1 };
       updatedRecords = [
         ...existingRecords,
-        { employeeId: employee.id, date: today, checkedAt: new Date().toISOString() },
+        { employeeId: employee.id, date: today, checkinAt: now, checkoutAt: null },
       ];
       localStorage.setItem(attendanceStorageKey, JSON.stringify(updatedAttendance));
       try {
@@ -968,7 +1304,7 @@ function initializeQrAttendance() {
 
       storedRecords = updatedRecords;
       renderCheckins(storedRecords);
-      scanStatus.textContent = `Đã điểm danh ${employee.name}. Ngày công kỳ lương demo 06/2025: ${updatedAttendance[employee.id]}/22.`;
+      scanStatus.textContent = `Đã ghi nhận giờ vào lúc ${formatTime(now)} cho ${employee.name}. Ngày công kỳ lương demo 06/2025: ${updatedAttendance[employee.id]}/22.`;
     } catch (error) {
       console.error("Không thể lưu lượt điểm danh QR.", error);
       scanStatus.textContent = "Không thể lưu lượt điểm danh. Kiểm tra bộ nhớ trình duyệt rồi thử lại.";
@@ -1017,7 +1353,12 @@ function initializeQrAttendance() {
       stopButton.hidden = false;
       await video.play();
       scanning = true;
-      scanStatus.textContent = "Đưa mã QR vào khung hình để điểm danh.";
+      const todayRecord = storedRecords.find((record) => record.employeeId === employee.id && record.date === localDateKey());
+      scanStatus.textContent = todayRecord?.checkoutAt
+        ? "Hôm nay đã đủ lượt vào và ra."
+        : todayRecord
+          ? "Đưa mã QR vào khung hình để ghi nhận giờ ra."
+          : "Đưa mã QR vào khung hình để ghi nhận giờ vào.";
       void scanCameraFrame();
     } catch (error) {
       console.error("Không thể khởi động camera quét QR.", error);
@@ -1032,7 +1373,20 @@ function initializeQrAttendance() {
     recordQrAttendance(manualInput.value.trim());
     manualInput.value = "";
   });
+  window.addEventListener("storage", (event) => {
+    if (event.key !== qrAttendanceStorageKey) {
+      return;
+    }
+    try {
+      storedRecords = parseQrAttendanceRecords(event.newValue);
+      renderCheckins(storedRecords);
+    } catch (error) {
+      console.error("Không thể đồng bộ lượt quét QR từ tab khác.", error);
+      scanStatus.textContent = "Không thể cập nhật dữ liệu chấm công từ tab khác. Hãy tải lại trang.";
+    }
+  });
   window.addEventListener("pagehide", stopCamera, { once: true });
+  window.setInterval(() => renderCheckins(storedRecords), 60000);
   renderCheckins(storedRecords);
 }
 
@@ -1051,37 +1405,97 @@ function initializePayrollEstimates() {
     status.textContent = "Không đọc được ngày công đã lưu; bảng đang dùng ngày công demo của từng nhân viên.";
   }
 
-  let totalNet = 0;
-  let totalInsurance = 0;
+  function updatePayrollRows() {
+    let totalNet = 0;
+    let totalInsurance = 0;
+    let configuredSalaryCount = 0;
 
-  table.querySelectorAll("[data-payroll-employee]").forEach((row) => {
-    const employeeId = row.dataset.payrollEmployee;
-    const employee = salaryRecords[employeeId];
-    const estimateCell = row.querySelector("[data-payroll-estimate]");
-    if (!employee || !estimateCell) {
-      console.error("Không thể cập nhật ước tính lương: thiếu hồ sơ hoặc ô tổng nhận.");
-      return;
+    table.querySelectorAll("[data-payroll-employee]").forEach((row) => {
+      const employeeId = row.dataset.payrollEmployee;
+      const employee = salaryRecords[employeeId];
+      const estimateCell = row.querySelector("[data-payroll-estimate]");
+      if (!employee || !estimateCell) {
+        console.error("Không thể cập nhật ước tính lương: thiếu hồ sơ hoặc ô tổng nhận.");
+        return;
+      }
+
+      const attendanceDays = savedAttendance[employeeId] ?? employee.attendanceDays;
+      const netSalary = estimateNetSalary(employee, attendanceDays);
+      estimateCell.textContent = salaryCurrency.format(netSalary);
+      totalNet += netSalary;
+      if (employee.base > 0) {
+        totalInsurance += employee.insurance;
+        configuredSalaryCount += 1;
+      }
+    });
+
+    document.querySelectorAll("[data-payroll-total]").forEach((output) => {
+      output.textContent = salaryCurrency.format(totalNet);
+    });
+    document.querySelectorAll("[data-payroll-insurance-total]").forEach((output) => {
+      output.textContent = salaryCurrency.format(totalInsurance);
+    });
+    document.querySelectorAll("[data-payroll-average]").forEach((output) => {
+      output.textContent = salaryCurrency.format(
+        configuredSalaryCount ? Math.round(totalNet / configuredSalaryCount) : 0,
+      );
+    });
+  }
+
+  updatePayrollRows();
+  window.addEventListener("storage", (event) => {
+    try {
+      if (event.key === attendanceStorageKey) {
+        savedAttendance = parseAttendanceRecords(event.newValue);
+        updatePayrollRows();
+        status.textContent = "Bảng lương đã được cập nhật theo ngày công mới.";
+      } else if (event.key === customEmployeeStorageKey) {
+        const updatedEmployees = parseCustomEmployeeRecords(event.newValue);
+        updatedEmployees.forEach((updatedEmployee) => {
+          let employee = employeeRecords.find((record) => record.id === updatedEmployee.id);
+          if (!employee) {
+            employee = updatedEmployee;
+            employeeRecords.push(employee);
+            employeeByCode.set(employee.id.toLocaleUpperCase("vi"), employee);
+            salaryRecords[employee.id] = {
+              ...employee,
+              role: `${employee.role} · ${employee.department}`,
+              attendanceDays: employee.days,
+            };
+            table.querySelector("[data-payroll-rows]")?.append(createPayrollRow(employee));
+          } else {
+            Object.assign(employee, updatedEmployee);
+            Object.assign(salaryRecords[updatedEmployee.id], updatedEmployee);
+          }
+          const row = table.querySelector(`[data-payroll-employee="${updatedEmployee.id}"]`);
+          if (row) {
+            [updatedEmployee.base, updatedEmployee.allowance, updatedEmployee.insurance, updatedEmployee.bonus].forEach(
+              (amount, index) => {
+                row.cells[index + 1].textContent = salaryCurrency.format(amount);
+              },
+            );
+            row.cells[6].replaceChildren(
+              createStatusBadge(
+                updatedEmployee.base > 0 ? "Ước tính demo" : "Chưa thiết lập lương",
+                updatedEmployee.base > 0 ? "neutral" : "warning",
+              ),
+            );
+          }
+        });
+        refreshEmployeeDirectorySummary();
+        const tableControls = document.querySelector("[data-table-controls]");
+        tableControlRefreshers.get(tableControls)?.();
+        updatePayrollRows();
+        status.textContent = "Bảng lương đã được cập nhật theo hồ sơ nhân viên mới.";
+      }
+    } catch (error) {
+      console.error("Không thể đồng bộ hồ sơ hoặc ngày công vào bảng lương.", error);
+      status.textContent = "Không thể đồng bộ dữ liệu lương. Hãy tải lại trang để xem dữ liệu mới nhất.";
     }
-
-    const attendanceDays = savedAttendance[employeeId] ?? employee.attendanceDays;
-    const netSalary = estimateNetSalary(employee, attendanceDays);
-    estimateCell.textContent = salaryCurrency.format(netSalary);
-    totalNet += netSalary;
-    totalInsurance += employee.insurance;
-  });
-
-  document.querySelectorAll("[data-payroll-total]").forEach((output) => {
-    output.textContent = salaryCurrency.format(totalNet);
-  });
-  document.querySelectorAll("[data-payroll-insurance-total]").forEach((output) => {
-    output.textContent = salaryCurrency.format(totalInsurance);
-  });
-  document.querySelectorAll("[data-payroll-average]").forEach((output) => {
-    output.textContent = salaryCurrency.format(employeeRecords.length ? Math.round(totalNet / employeeRecords.length) : 0);
   });
 
   if (!status.textContent) {
-    status.textContent = "Các phiếu lương dùng chung hồ sơ demo; ngày công lấy từ dữ liệu đã lưu hoặc ngày công mẫu của nhân viên.";
+    status.textContent = "Ngày công thay đổi theo lượt quét QR; hồ sơ chưa có mức lương được đánh dấu “Chưa thiết lập lương”.";
   }
 }
 
@@ -1114,6 +1528,14 @@ function initializeSalaryDetail() {
   detail.querySelector("[data-salary-allowance]").textContent = salaryCurrency.format(employee.allowance);
   detail.querySelector("[data-salary-insurance]").textContent = `− ${salaryCurrency.format(employee.insurance)}`;
   detail.querySelector("[data-salary-bonus]").textContent = salaryCurrency.format(employee.bonus);
+  const customSalaryPanel = detail.querySelector("[data-custom-salary-panel]");
+  const customSalaryForm = detail.querySelector("[data-custom-salary-form]");
+  if (/^nv-\d{3,}$/.test(employeeId)) {
+    customSalaryPanel.hidden = false;
+    ["base", "allowance", "insurance", "bonus"].forEach((field) => {
+      customSalaryForm.elements[field].value = String(employee[field]);
+    });
+  }
 
   const form = detail.querySelector("[data-attendance-form]");
   const daysInput = form.elements.attendanceDays;
@@ -1134,7 +1556,12 @@ function initializeSalaryDetail() {
 
   const initialDays = storageAvailable ? (savedAttendance[employeeId] ?? employee.attendanceDays) : employee.attendanceDays;
   daysInput.value = String(initialDays);
-  saveButton.disabled = !storageAvailable;
+  const attendanceManagedByQr = /^nv-\d{3,}$/.test(employeeId);
+  daysInput.readOnly = attendanceManagedByQr;
+  saveButton.disabled = !storageAvailable || attendanceManagedByQr;
+  if (attendanceManagedByQr) {
+    status.textContent = "Ngày công của nhân viên mới được ghi nhận tự động khi quét QR.";
+  }
 
   function updateEstimate(showValidationMessage = false) {
     if (!daysInput.validity.valid || daysInput.value === "") {
@@ -1157,9 +1584,73 @@ function initializeSalaryDetail() {
     return true;
   }
 
+  if (customSalaryForm && !customSalaryPanel.hidden) {
+    const salaryStatus = customSalaryForm.querySelector("[data-custom-salary-status]");
+    customSalaryForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!customSalaryForm.reportValidity()) {
+        return;
+      }
+      const updatedSalary = Object.fromEntries(
+        ["base", "allowance", "insurance", "bonus"].map((field) => [
+          field,
+          Number(customSalaryForm.elements[field].value),
+        ]),
+      );
+      if (Object.values(updatedSalary).some((amount) => !Number.isSafeInteger(amount) || amount < 0)) {
+        salaryStatus.textContent = "Nhập các khoản lương bằng số nguyên không âm.";
+        return;
+      }
+
+      let savedEmployees;
+      try {
+        savedEmployees = parseCustomEmployeeRecords(localStorage.getItem(customEmployeeStorageKey));
+        const employeeIndex = savedEmployees.findIndex((record) => record.id === employeeId);
+        if (employeeIndex < 0) {
+          throw new Error("Không tìm thấy hồ sơ nhân viên cần cập nhật.");
+        }
+        savedEmployees[employeeIndex] = { ...savedEmployees[employeeIndex], ...updatedSalary };
+        localStorage.setItem(customEmployeeStorageKey, JSON.stringify(savedEmployees));
+      } catch (error) {
+        console.error("Không thể lưu thông tin lương nhân viên.", error);
+        salaryStatus.textContent = "Không thể lưu thông tin lương. Kiểm tra bộ nhớ trình duyệt rồi thử lại.";
+        return;
+      }
+
+      Object.assign(employee, updatedSalary);
+      Object.assign(employeeRecords.find((record) => record.id === employeeId), updatedSalary);
+      detail.querySelector("[data-salary-base]").textContent = salaryCurrency.format(employee.base);
+      detail.querySelector("[data-salary-allowance]").textContent = salaryCurrency.format(employee.allowance);
+      detail.querySelector("[data-salary-insurance]").textContent = `− ${salaryCurrency.format(employee.insurance)}`;
+      detail.querySelector("[data-salary-bonus]").textContent = salaryCurrency.format(employee.bonus);
+      updateEstimate();
+      salaryStatus.textContent = "Đã lưu mức lương. Thu nhập ước tính được tính theo ngày công hiện tại.";
+    });
+  }
+
   daysInput.addEventListener("input", () => updateEstimate(true));
+  if (attendanceManagedByQr) {
+    window.addEventListener("storage", (event) => {
+      if (event.key !== attendanceStorageKey) {
+        return;
+      }
+      try {
+        savedAttendance = parseAttendanceRecords(event.newValue);
+        daysInput.value = String(savedAttendance[employeeId] ?? employee.attendanceDays);
+        updateEstimate();
+        status.textContent = "Ngày công đã được cập nhật tự động từ lượt quét QR.";
+      } catch (error) {
+        console.error("Không thể đồng bộ ngày công QR vào chi tiết lương.", error);
+        status.textContent = "Không thể đồng bộ ngày công. Hãy tải lại trang để xem dữ liệu mới nhất.";
+      }
+    });
+  }
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+    if (attendanceManagedByQr) {
+      status.textContent = "Ngày công nhân viên mới chỉ được ghi nhận tự động qua QR.";
+      return;
+    }
     if (!updateEstimate(true) || !storageAvailable) {
       if (!storageAvailable) {
         status.textContent = "Không thể lưu vì dữ liệu ngày công hiện có không đọc được.";
@@ -1217,6 +1708,7 @@ initializeCurrentEmployeeProfile();
 initializePayrollEstimates();
 initializeSalaryDetail();
 initializeEmployeeProfiles();
+initializeEmployeeCreation();
 initializeEmployeeMessaging();
 initializeQrAttendance();
 

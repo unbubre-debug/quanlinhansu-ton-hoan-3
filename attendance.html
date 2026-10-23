@@ -74,15 +74,7 @@
             <div>
               <p class="overline">QUẢN LÝ THỜI GIAN</p>
               <h1 id="page-title">Chấm công & nghỉ phép</h1>
-              <p class="page-subtitle">20 hồ sơ trong bộ dữ liệu demo; bảng chấm công và số liệu chưa lấy từ hệ thống thực tế.</p>
-            </div>
-            <div class="toolbar-actions">
-              <button
-                class="action-button primary"
-                type="button"
-                disabled
-                title="Chức năng cần kết nối với hệ thống quản lý nhân sự."
-              >+ Tạo đơn mới</button>
+              <p class="page-subtitle">Giờ vào và giờ ra được cập nhật tự động sau mỗi lượt quét QR.</p>
             </div>
           </section>
 
@@ -90,12 +82,12 @@
             <div class="panel-heading">
               <div>
                 <h2 id="qr-attendance-title">Điểm danh bằng mã QR</h2>
-                <p>Mã dùng chung cho nhân viên đã đăng nhập.</p>
+                <p>Lượt quét đầu ghi nhận giờ vào; lượt quét tiếp theo ghi nhận giờ ra.</p>
               </div>
               <a class="secondary-button" href="login.html" data-qr-login-link>Đăng nhập nhân viên</a>
             </div>
             <p class="qr-demo-notice" role="note">
-              Bản demo: lượt quét được lưu trên trình duyệt này và cộng ngày công vào kỳ lương demo 06/2025 (tối đa 22 ngày). Mã QR chỉ chứa mã dùng chung, không chứa dữ liệu nhân viên; mã tĩnh không xác minh vị trí và chưa thể dùng làm dữ liệu lương thật.
+            Bản demo: giờ vào, giờ ra và thời gian làm được lưu trên trình duyệt này, tự cập nhật trên các tab đang mở; ngày công chỉ được cộng một lần khi quét vào. Dữ liệu chưa đồng bộ giữa các thiết bị hoặc với hệ thống lương thực tế.
             </p>
             <div class="qr-attendance-content">
               <div class="qr-code-card">
@@ -112,7 +104,7 @@
               </div>
               <div class="qr-scan-card">
                 <h3 data-qr-current-employee>Chưa đăng nhập nhân viên</h3>
-                <p>Đăng nhập bằng mã nhân viên và mật khẩu demo <strong>123</strong>, sau đó bật camera để quét mã.</p>
+                <p>Đăng nhập bằng mã nhân viên và mật khẩu demo <strong>123</strong>, sau đó quét một lần khi vào và quét lần nữa khi ra.</p>
                 <div class="qr-scan-actions">
                   <button class="action-button primary" type="button" data-start-qr-scan>Bật camera và quét</button>
                   <button class="action-button" type="button" data-stop-qr-scan hidden>Dừng camera</button>
@@ -152,14 +144,14 @@
           <section class="panel qr-checkins-panel" aria-labelledby="qr-checkins-title">
             <div class="data-header">
               <div>
-                <h2 id="qr-checkins-title">Lượt quét QR hôm nay</h2>
-                <p class="page-subtitle">Danh sách lượt điểm danh demo đã lưu trên trình duyệt này.</p>
+                <h2 id="qr-checkins-title">Chấm công QR hôm nay</h2>
+                <p class="page-subtitle">Giờ vào, giờ ra và tổng thời gian làm của nhân viên đã quét.</p>
               </div>
             </div>
             <div class="data-table-wrapper" role="region" aria-label="Lượt chấm công bằng QR hôm nay" tabindex="0">
               <table class="data-table qr-checkins-table">
                 <thead>
-                  <tr><th scope="col">Nhân viên</th><th scope="col">Mã nhân viên</th><th scope="col">Giờ quét</th><th scope="col">Trạng thái</th></tr>
+                  <tr><th scope="col">Nhân viên</th><th scope="col">Mã nhân viên</th><th scope="col">Giờ vào</th><th scope="col">Giờ ra</th><th scope="col">Thời gian làm</th><th scope="col">Trạng thái</th></tr>
                 </thead>
                 <tbody data-qr-checkins></tbody>
               </table>
@@ -169,8 +161,8 @@
           <section class="panel data-panel" aria-labelledby="attendance-table-title">
             <div class="data-header">
               <div>
-                <h2 id="attendance-table-title">Bảng chấm công tháng 06/2025</h2>
-                <p class="page-subtitle"><span data-directory-count>20</span> nhân viên; mỗi dòng hiển thị trạng thái của bộ dữ liệu demo hiện tại.</p>
+                <h2 id="attendance-table-title">Bảng chấm công</h2>
+                <p class="page-subtitle"><span data-directory-count>20</span> nhân viên; giờ vào/ra hôm nay cập nhật theo lượt quét QR.</p>
               </div>
             </div>
 
@@ -187,6 +179,8 @@
                   <option>Đi muộn</option>
                   <option>Làm từ xa</option>
                   <option>Nghỉ phép</option>
+                  <option>Đang làm</option>
+                  <option>Đã ra</option>
                 </select>
               </label>
               <label class="table-control">

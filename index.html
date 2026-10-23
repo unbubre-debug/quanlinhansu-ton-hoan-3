@@ -82,44 +82,125 @@
         </header>
 
         <div class="page-content dashboard-content">
-          <section class="welcome-row" aria-labelledby="welcome-title">
-            <div>
-              <p class="overline"><time data-current-date="welcome"></time></p>
-              <h1 id="welcome-title">Chào bạn, Linh <span aria-hidden="true">✦</span></h1>
-              <p class="welcome-copy">Tổng quan nhanh · Số liệu hiện là dữ liệu demo.</p>
+          <section class="dashboard-hero" aria-labelledby="welcome-title">
+            <div class="dashboard-hero-copy">
+              <span class="dashboard-eyebrow"><span aria-hidden="true">✦</span> KHÔNG GIAN NHÂN SỰ NOVA</span>
+              <p class="dashboard-date"><time data-current-date="welcome"></time></p>
+              <h1 id="welcome-title">Mỗi người<br>tạo nên <span>một Nova</span><br>tốt hơn.</h1>
+              <p class="dashboard-hero-description">Chào mừng bạn quay lại. Cùng khám phá nhịp điệu và những điều đang diễn ra trong đội ngũ hôm nay.</p>
+              <div class="dashboard-hero-actions">
+                <a class="dashboard-hero-button" href="employees.html">Khám phá đội ngũ <span aria-hidden="true">→</span></a>
+                <a class="dashboard-hero-secondary" href="attendance.html">Chấm công QR <span aria-hidden="true">↗</span></a>
+                <span class="dashboard-hero-caption">Một nơi kết nối mọi người</span>
+              </div>
             </div>
-            <a
-              class="primary-button"
-              href="#employee-messages"
-              data-open-employee-messages
-            >
-              <span aria-hidden="true">✉</span> Nhắn tin cho nhân viên
-            </a>
+            <div class="dashboard-hero-art" aria-label="Một số thành viên Nova Creative">
+              <span class="hero-orbit hero-orbit-one" aria-hidden="true"></span>
+              <span class="hero-orbit hero-orbit-two" aria-hidden="true"></span>
+              <div class="hero-photo hero-photo-main">
+                <img src="anhnv/hoang-ngoc.svg" alt="Hoàng Ngọc, Product Designer">
+              </div>
+              <div class="hero-photo hero-photo-small hero-photo-top">
+                <img src="anhnv/tran-anh.svg" alt="Trần Anh, Frontend Developer">
+              </div>
+              <div class="hero-photo hero-photo-small hero-photo-bottom">
+                <img src="anhnv/pham-thao.svg" alt="Phạm Thảo, Talent Acquisition">
+              </div>
+              <div class="hero-photo hero-photo-tiny">
+                <img src="anhnv/le-minh.svg" alt="Lê Minh, Content Executive">
+              </div>
+              <div class="hero-note-card">
+                <span class="hero-note-icon" aria-hidden="true">✦</span>
+                <span><strong>Con người là sức mạnh</strong><small>Cùng nhau tiến xa hơn</small></span>
+              </div>
+              <span class="hero-art-label">NOVA · PEOPLE & CULTURE</span>
+            </div>
           </section>
 
-          <section class="stats-grid" aria-label="Chỉ số nhân sự tổng quan">
-            <article class="stat-card">
+          <section class="stats-grid dashboard-stats-grid" aria-label="Chỉ số nhân sự tổng quan">
+            <a class="stat-card dashboard-stat-card stat-card-violet" href="employees.html" aria-label="Xem danh sách nhân viên">
+              <span class="dashboard-stat-icon" aria-hidden="true">♙</span>
               <p class="stat-label">Tổng nhân viên</p>
               <strong class="stat-value" data-company-headcount>20</strong>
-              <span class="stat-caption">Hồ sơ demo</span>
-            </article>
-            <article class="stat-card">
+              <span class="stat-caption">Thành viên trong đội ngũ</span>
+              <span class="stat-card-mark" aria-hidden="true">↗</span>
+            </a>
+            <a class="stat-card dashboard-stat-card stat-card-mint" href="attendance.html" aria-label="Xem tình hình chấm công">
+              <span class="dashboard-stat-icon" aria-hidden="true">◉</span>
               <p class="stat-label">Đang làm việc</p>
               <strong class="stat-value" data-working-today>18</strong>
               <span class="stat-caption" data-working-today-share>90% tổng nhân sự</span>
-            </article>
-            <article class="stat-card">
+              <span class="stat-card-mark" aria-hidden="true">↗</span>
+            </a>
+            <a class="stat-card dashboard-stat-card stat-card-blue" href="attendance.html" aria-label="Xem nhân viên làm từ xa và chấm công">
+              <span class="dashboard-stat-icon" aria-hidden="true">⌂</span>
+              <p class="stat-label">Làm từ xa</p>
+              <strong class="stat-value" data-attendance-count="remote">8</strong>
+              <span class="stat-caption" data-attendance-share="remote">40% tổng nhân sự</span>
+              <span class="stat-card-mark" aria-hidden="true">↗</span>
+            </a>
+            <a class="stat-card dashboard-stat-card stat-card-peach" href="attendance.html" aria-label="Xem tình hình nghỉ phép">
+              <span class="dashboard-stat-icon" aria-hidden="true">♡</span>
               <p class="stat-label">Nghỉ phép hôm nay</p>
               <strong class="stat-value" data-attendance-count="leave">2</strong>
               <span class="stat-caption" data-attendance-share="leave">10% tổng nhân sự</span>
+              <span class="stat-card-mark" aria-hidden="true">↗</span>
+            </a>
+          </section>
+
+          <section class="dashboard-lower-grid" aria-label="Thông tin đội ngũ">
+            <article class="dashboard-insight-card">
+              <div class="dashboard-section-heading">
+                <div>
+                  <span class="dashboard-section-kicker">NHỊP ĐỘ HÔM NAY</span>
+                  <h2>Đội ngũ đang chuyển động</h2>
+                </div>
+                <a class="dashboard-text-link" href="attendance.html">Xem chấm công <span aria-hidden="true">↗</span></a>
+              </div>
+              <div class="team-presence">
+                <div class="presence-visual" aria-hidden="true">
+                  <span class="presence-sun"></span>
+                  <span class="presence-person presence-person-one"></span>
+                  <span class="presence-person presence-person-two"></span>
+                  <span class="presence-person presence-person-three"></span>
+                  <span class="presence-ground"></span>
+                </div>
+                <div class="presence-details">
+                  <p><span class="presence-dot dot-office"></span><span>Tại văn phòng</span><strong data-attendance-count="onsite">10</strong></p>
+                  <p><span class="presence-dot dot-remote"></span><span>Làm việc từ xa</span><strong data-attendance-count="remote">8</strong></p>
+                  <p><span class="presence-dot dot-leave"></span><span>Nghỉ phép</span><strong data-attendance-count="leave">2</strong></p>
+                </div>
+              </div>
+              <div class="presence-footnote">
+                <span aria-hidden="true">✦</span>
+                <span><strong data-dashboard-qr-count>0</strong> nhân viên đã quét QR hôm nay</span>
+                <a href="attendance.html">Chi tiết <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+
+            <article class="dashboard-people-card">
+              <div class="dashboard-section-heading">
+                <div>
+                  <span class="dashboard-section-kicker">CÙNG NHAU TỎA SÁNG</span>
+                  <h2>Đội ngũ Nova</h2>
+                </div>
+                <a class="people-count-link" href="employees.html"><span data-company-headcount>20</span> <span aria-hidden="true">→</span></a>
+              </div>
+              <p class="people-card-copy">Những con người tài năng cùng tạo nên điều khác biệt mỗi ngày.</p>
+              <div class="people-avatar-row" data-dashboard-team-avatars aria-label="Một số nhân viên"></div>
+              <div class="dashboard-people-links">
+                <a class="people-card-link" href="employees.html">Gặp gỡ mọi người <span aria-hidden="true">→</span></a>
+                <a class="people-card-link" href="payroll.html">Xem bảng lương <span aria-hidden="true">→</span></a>
+              </div>
             </article>
           </section>
 
           <section class="dashboard-shortcuts" aria-labelledby="dashboard-shortcuts-title">
             <div class="panel-heading">
               <div>
-                <h2 id="dashboard-shortcuts-title">Truy cập nhanh</h2>
-                <p>Mở trang chi tiết khi cần.</p>
+                <span class="dashboard-section-kicker">MỌI THỨ BẠN CẦN</span>
+                <h2 id="dashboard-shortcuts-title">Khám phá PeopleHub</h2>
+                <p>Truy cập nhanh những không gian làm việc quan trọng.</p>
               </div>
             </div>
             <div class="dashboard-shortcut-list">
