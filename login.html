@@ -30,16 +30,16 @@
 
           <div class="auth-metrics" aria-label="Số liệu hệ thống">
             <div class="auth-metric">
-              <strong>248</strong>
-              <span>Nhân viên</span>
+              <strong data-company-headcount>20</strong>
+              <span>Hồ sơ nhân viên demo</span>
             </div>
             <div class="auth-metric">
-              <strong>96%</strong>
-              <span>Đúng giờ</span>
+              <strong data-employment-count="active">15</strong>
+              <span>Đang làm việc</span>
             </div>
             <div class="auth-metric">
-              <strong>12</strong>
-              <span>Đơn chờ duyệt</span>
+              <strong data-employment-count="leave">2</strong>
+              <span>Đang nghỉ phép</span>
             </div>
           </div>
         </div>
@@ -48,16 +48,17 @@
       <section class="auth-panel" id="main-content" aria-label="Màn hình đăng nhập">
         <div class="login-card">
           <h2>Đăng nhập</h2>
-          <p>Đăng nhập bản demo. Hệ thống hiện chưa xác thực tài khoản với máy chủ.</p>
+          <p>Đăng nhập demo bằng mã nhân viên và mật khẩu mặc định <strong>123</strong>. Mật khẩu dùng chung này không an toàn cho hệ thống thật.</p>
 
           <form data-login-form>
             <div class="form-field">
-              <label for="email">Email</label>
+              <label for="employee-id">Mã nhân viên</label>
               <input
-                id="email"
-                name="email"
-                type="email"
-                value="demo@peoplehub.vn"
+                id="employee-id"
+                name="employeeId"
+                type="text"
+                value="hn"
+                placeholder="Ví dụ: hn"
                 autocomplete="username"
                 required
               >
@@ -69,7 +70,7 @@
                 id="password"
                 name="password"
                 type="password"
-                value="peoplehub-demo"
+                value="123"
                 autocomplete="current-password"
                 required
               >
@@ -80,7 +81,7 @@
                 <input type="checkbox" name="remember">
                 <span>Ghi nhớ đăng nhập</span>
               </label>
-              <a href="mailto:support@peoplehub.vn?subject=Yeu%20cau%20dat%20lai%20mat%20khau">Quên mật khẩu?</a>
+              <span>Mật khẩu mặc định: 123</span>
             </div>
 
             <button class="login-button" type="submit">Đăng nhập</button>

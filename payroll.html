@@ -52,8 +52,8 @@
             <a href="mailto:support@peoplehub.vn">Liên hệ hỗ trợ <span aria-hidden="true">↗</span></a>
           </div>
           <div class="user-profile">
-            <span class="avatar avatar-violet">ML</span>
-            <span class="user-copy"><strong>Minh Linh</strong><small>Quản trị viên</small></span>
+            <span class="avatar avatar-violet" data-current-user-initials>ML</span>
+            <span class="user-copy"><strong data-current-user-name>Minh Linh</strong><small data-current-user-role>Quản trị viên</small></span>
             <span class="chevron" aria-hidden="true">···</span>
           </div>
         </div>
@@ -65,7 +65,7 @@
           <div class="topbar-actions">
             <span class="sync-status" role="status" aria-label="Dữ liệu minh họa"><span class="sync-label">Bản xem trước</span></span>
             <span class="today-label"><span aria-hidden="true">◷</span><time data-current-date></time></span>
-            <span class="topbar-avatar avatar avatar-violet" role="img" aria-label="Hồ sơ Minh Linh">ML</span>
+            <span class="topbar-avatar avatar avatar-violet" data-current-user-initials role="img" aria-label="Hồ sơ Minh Linh">ML</span>
           </div>
         </header>
 
@@ -74,26 +74,26 @@
             <div>
               <p class="overline">LƯƠNG & PHÚC LỢI</p>
               <h1 id="page-title">Bảng lương nhân sự</h1>
-              <p class="page-subtitle">Giao diện mẫu theo dõi lương; số liệu không phải dữ liệu thanh toán thực tế.</p>
+              <p class="page-subtitle">Ước tính từ bộ dữ liệu demo 20 nhân viên; chưa kết nối bảng lương hoặc dữ liệu thanh toán thật.</p>
             </div>
           </section>
 
           <section class="summary-row" aria-label="Tổng quan lương">
             <article class="summary-card">
-              <div class="summary-label">Tổng chi trả minh họa</div>
-              <div class="summary-number">1.360.000.000 ₫ <span>tháng 06/2025</span></div>
+              <div class="summary-label">Tổng lương thực nhận ước tính</div>
+              <div class="summary-number"><span data-payroll-total>0 ₫</span> <span>20 nhân viên</span></div>
             </article>
             <article class="summary-card">
               <div class="summary-label">Bảo hiểm</div>
-              <div class="summary-number">168.000.000 ₫ <span>12,3%</span></div>
+              <div class="summary-number"><span data-payroll-insurance-total>0 ₫</span> <span>khấu trừ demo</span></div>
             </article>
             <article class="summary-card">
-              <div class="summary-label">Thuế TNCN</div>
-              <div class="summary-number">96.000.000 ₫ <span>7,1%</span></div>
+              <div class="summary-label">Lương thực nhận bình quân</div>
+              <div class="summary-number"><span data-payroll-average>0 ₫</span> <span>mỗi nhân viên</span></div>
             </article>
             <article class="summary-card">
-              <div class="summary-label">Đang chờ thanh toán</div>
-              <div class="summary-number">19 <span>người</span></div>
+              <div class="summary-label">Số nhân viên trong kỳ</div>
+              <div class="summary-number"><span data-payroll-total-count>20</span> <span>phiếu lương ước tính</span></div>
             </article>
           </section>
 
@@ -101,7 +101,7 @@
             <div class="data-header">
               <div>
                 <h2 id="payroll-table-title">Phiếu lương tháng 06/2025</h2>
-                <p class="page-subtitle">4 phiếu lương minh họa. Cột tổng nhận ước tính theo ngày công đã lưu trên trình duyệt; tổng chi trả phía trên là số liệu mẫu độc lập, không phải dữ liệu thanh toán.</p>
+                <p class="page-subtitle"><span data-directory-count>20</span> phiếu lương ước tính dùng cùng hồ sơ nhân viên và ngày công; không phải dữ liệu thanh toán thực tế.</p>
                 <p class="payroll-estimate-status" data-payroll-estimate-status role="status" aria-live="polite"></p>
               </div>
             </div>
@@ -113,10 +113,9 @@
               </label>
               <label class="table-control">
                 <span>Trạng thái</span>
-                <select data-filter-column="6" aria-label="Lọc theo trạng thái thanh toán">
+                <select data-filter-column="6" aria-label="Lọc theo loại dữ liệu bảng lương">
                   <option value="">Tất cả</option>
-                  <option>Đã thanh toán</option>
-                  <option>Chờ duyệt</option>
+                  <option>Ước tính demo</option>
                 </select>
               </label>
               <label class="table-control">
@@ -153,47 +152,10 @@
                     <th scope="col">BHXH/BHYT</th>
                     <th scope="col">Thưởng</th>
                     <th scope="col">Tổng nhận ước tính</th>
-                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Loại dữ liệu</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr data-payroll-employee="hn">
-                    <td><div class="employee-cell"><span class="avatar avatar-coral">HN</span><span><strong><a class="table-link" href="salary-detail.html?employee=hn">Hoàng Ngọc</a></strong><small>Design</small></span></div></td>
-                    <td>18.500.000 ₫</td>
-                    <td>2.100.000 ₫</td>
-                    <td>1.400.000 ₫</td>
-                    <td>1.000.000 ₫</td>
-                    <td data-payroll-estimate>20.200.000 ₫</td>
-                    <td><span class="status-badge positive">Đã thanh toán</span></td>
-                  </tr>
-                  <tr data-payroll-employee="ta">
-                    <td><div class="employee-cell"><span class="avatar avatar-blue">TA</span><span><strong><a class="table-link" href="salary-detail.html?employee=ta">Trần Anh</a></strong><small>Frontend</small></span></div></td>
-                    <td>22.000.000 ₫</td>
-                    <td>2.800.000 ₫</td>
-                    <td>1.700.000 ₫</td>
-                    <td>1.500.000 ₫</td>
-                    <td data-payroll-estimate>24.600.000 ₫</td>
-                    <td><span class="status-badge positive">Đã thanh toán</span></td>
-                  </tr>
-                  <tr data-payroll-employee="lm">
-                    <td><div class="employee-cell"><span class="avatar avatar-yellow">LM</span><span><strong><a class="table-link" href="salary-detail.html?employee=lm">Lê Minh</a></strong><small>Marketing</small></span></div></td>
-                    <td>16.000.000 ₫</td>
-                    <td>1.900.000 ₫</td>
-                    <td>1.200.000 ₫</td>
-                    <td>600.000 ₫</td>
-                    <td data-payroll-estimate>17.300.000 ₫</td>
-                    <td><span class="status-badge warning">Chờ duyệt</span></td>
-                  </tr>
-                  <tr data-payroll-employee="pt">
-                    <td><div class="employee-cell"><span class="avatar avatar-green">PT</span><span><strong><a class="table-link" href="salary-detail.html?employee=pt">Phạm Thảo</a></strong><small>HR</small></span></div></td>
-                    <td>17.800.000 ₫</td>
-                    <td>2.300.000 ₫</td>
-                    <td>1.300.000 ₫</td>
-                    <td>900.000 ₫</td>
-                    <td data-payroll-estimate>19.700.000 ₫</td>
-                    <td><span class="status-badge positive">Đã thanh toán</span></td>
-                  </tr>
-                </tbody>
+                <tbody data-payroll-rows></tbody>
               </table>
             </div>
           </section>

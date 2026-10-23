@@ -52,8 +52,8 @@
             <a href="mailto:support@peoplehub.vn">Liên hệ hỗ trợ <span aria-hidden="true">↗</span></a>
           </div>
           <div class="user-profile">
-            <span class="avatar avatar-violet">ML</span>
-            <span class="user-copy"><strong>Minh Linh</strong><small>Quản trị viên</small></span>
+            <span class="avatar avatar-violet" data-current-user-initials>ML</span>
+            <span class="user-copy"><strong data-current-user-name>Minh Linh</strong><small data-current-user-role>Quản trị viên</small></span>
             <span class="chevron" aria-hidden="true">···</span>
           </div>
         </div>
@@ -65,7 +65,7 @@
           <div class="topbar-actions">
             <span class="sync-status" role="status" aria-label="Dữ liệu minh họa"><span class="sync-label">Bản xem trước</span></span>
             <span class="today-label"><span aria-hidden="true">◷</span><time data-current-date></time></span>
-            <span class="topbar-avatar avatar avatar-violet" role="img" aria-label="Hồ sơ Minh Linh">ML</span>
+            <span class="topbar-avatar avatar avatar-violet" data-current-user-initials role="img" aria-label="Hồ sơ Minh Linh">ML</span>
           </div>
         </header>
 
@@ -74,7 +74,7 @@
             <div>
               <p class="overline">QUẢN LÝ THỜI GIAN</p>
               <h1 id="page-title">Chấm công & nghỉ phép</h1>
-              <p class="page-subtitle">Giao diện mẫu theo dõi giờ công; số liệu không phải dữ liệu chấm công thực tế.</p>
+              <p class="page-subtitle">20 hồ sơ trong bộ dữ liệu demo; bảng chấm công và số liệu chưa lấy từ hệ thống thực tế.</p>
             </div>
             <div class="toolbar-actions">
               <button
@@ -86,30 +86,91 @@
             </div>
           </section>
 
+          <section class="panel qr-attendance-panel" aria-labelledby="qr-attendance-title">
+            <div class="panel-heading">
+              <div>
+                <h2 id="qr-attendance-title">Điểm danh bằng mã QR</h2>
+                <p>Mã dùng chung cho nhân viên đã đăng nhập.</p>
+              </div>
+              <a class="secondary-button" href="login.html" data-qr-login-link>Đăng nhập nhân viên</a>
+            </div>
+            <p class="qr-demo-notice" role="note">
+              Bản demo: lượt quét được lưu trên trình duyệt này và cộng ngày công vào kỳ lương demo 06/2025 (tối đa 22 ngày). Mã QR chỉ chứa mã dùng chung, không chứa dữ liệu nhân viên; mã tĩnh không xác minh vị trí và chưa thể dùng làm dữ liệu lương thật.
+            </p>
+            <div class="qr-attendance-content">
+              <div class="qr-code-card">
+                <img
+                  data-attendance-qr
+                  alt="Mã QR chấm công demo dùng chung"
+                  width="220"
+                  height="220"
+                  referrerpolicy="no-referrer"
+                >
+                <strong>Mã QR chấm công</strong>
+                <span>Nhân viên quét mã này sau khi đăng nhập.</span>
+                <p class="qr-image-status" data-qr-image-status role="status" aria-live="polite"></p>
+              </div>
+              <div class="qr-scan-card">
+                <h3 data-qr-current-employee>Chưa đăng nhập nhân viên</h3>
+                <p>Đăng nhập bằng mã nhân viên và mật khẩu demo <strong>123</strong>, sau đó bật camera để quét mã.</p>
+                <div class="qr-scan-actions">
+                  <button class="action-button primary" type="button" data-start-qr-scan>Bật camera và quét</button>
+                  <button class="action-button" type="button" data-stop-qr-scan hidden>Dừng camera</button>
+                </div>
+                <video class="qr-camera-preview" data-qr-camera playsinline muted hidden></video>
+                <form class="qr-manual-form" data-qr-manual-form>
+                  <label for="qr-code-entry">Nếu camera không được hỗ trợ, nhập nội dung QR để thử demo</label>
+                  <div>
+                    <input id="qr-code-entry" type="text" data-qr-code-entry autocomplete="off" placeholder="Mã nội bộ QR demo">
+                    <button class="action-button" type="submit">Xác nhận</button>
+                  </div>
+                </form>
+                <p class="qr-scan-status" data-qr-scan-status role="status" aria-live="polite"></p>
+              </div>
+            </div>
+          </section>
+
           <section class="summary-row" aria-label="Tổng quan chấm công">
             <article class="summary-card">
               <div class="summary-label">Có mặt</div>
-              <div class="summary-number">216 <span>người</span></div>
+              <div class="summary-number"><span data-attendance-count="onsite">10</span> <span>tại văn phòng</span></div>
             </article>
             <article class="summary-card">
               <div class="summary-label">Làm từ xa</div>
-              <div class="summary-number">18 <span>7,2%</span></div>
+              <div class="summary-number"><span data-attendance-count="remote">8</span> <span data-attendance-share="remote">40%</span></div>
             </article>
             <article class="summary-card">
-              <div class="summary-label">Đi muộn</div>
-              <div class="summary-number">09 <span>3,6%</span></div>
+              <div class="summary-label">Đi muộn · thuộc nhóm tại văn phòng</div>
+              <div class="summary-number"><span data-attendance-count="late">2</span> <span data-attendance-share="late">10%</span></div>
             </article>
             <article class="summary-card">
               <div class="summary-label">Nghỉ phép</div>
-              <div class="summary-number">12 <span>đơn</span></div>
+              <div class="summary-number"><span data-attendance-count="leave">2</span> <span>người</span></div>
             </article>
+          </section>
+
+          <section class="panel qr-checkins-panel" aria-labelledby="qr-checkins-title">
+            <div class="data-header">
+              <div>
+                <h2 id="qr-checkins-title">Lượt quét QR hôm nay</h2>
+                <p class="page-subtitle">Danh sách lượt điểm danh demo đã lưu trên trình duyệt này.</p>
+              </div>
+            </div>
+            <div class="data-table-wrapper" role="region" aria-label="Lượt chấm công bằng QR hôm nay" tabindex="0">
+              <table class="data-table qr-checkins-table">
+                <thead>
+                  <tr><th scope="col">Nhân viên</th><th scope="col">Mã nhân viên</th><th scope="col">Giờ quét</th><th scope="col">Trạng thái</th></tr>
+                </thead>
+                <tbody data-qr-checkins></tbody>
+              </table>
+            </div>
           </section>
 
           <section class="panel data-panel" aria-labelledby="attendance-table-title">
             <div class="data-header">
               <div>
                 <h2 id="attendance-table-title">Bảng chấm công tháng 06/2025</h2>
-                <p class="page-subtitle">5 bản ghi minh họa tháng 06/2025; không đại diện toàn bộ nhân sự</p>
+                <p class="page-subtitle"><span data-directory-count>20</span> nhân viên; mỗi dòng hiển thị trạng thái của bộ dữ liệu demo hiện tại.</p>
               </div>
             </div>
 
@@ -124,6 +185,7 @@
                   <option value="">Tất cả</option>
                   <option>Đúng giờ</option>
                   <option>Đi muộn</option>
+                  <option>Làm từ xa</option>
                   <option>Nghỉ phép</option>
                 </select>
               </label>
@@ -159,52 +221,11 @@
                     <th scope="col">Ca làm</th>
                     <th scope="col">Giờ vào</th>
                     <th scope="col">Giờ ra</th>
-                    <th scope="col">OT</th>
+                    <th scope="col">Làm thêm giờ</th>
                     <th scope="col">Trạng thái</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-coral">HN</span><span><strong>Hoàng Ngọc</strong><small>Design</small></span></div></td>
-                    <td>Sáng</td>
-                    <td>08:30</td>
-                    <td>17:30</td>
-                    <td>1,5 giờ</td>
-                    <td><span class="status-badge positive">Đúng giờ</span></td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-blue">TA</span><span><strong>Trần Anh</strong><small>Frontend</small></span></div></td>
-                    <td>Sáng</td>
-                    <td>08:48</td>
-                    <td>17:32</td>
-                    <td>0,5 giờ</td>
-                    <td><span class="status-badge warning">Đi muộn</span></td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-yellow">LM</span><span><strong>Lê Minh</strong><small>Marketing</small></span></div></td>
-                    <td>Chiều</td>
-                    <td>09:00</td>
-                    <td>18:00</td>
-                    <td>0h</td>
-                    <td><span class="status-badge positive">Đúng giờ</span></td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-green">PT</span><span><strong>Phạm Thảo</strong><small>HR</small></span></div></td>
-                    <td>Sáng</td>
-                    <td>08:00</td>
-                    <td>17:00</td>
-                    <td>0h</td>
-                    <td><span class="status-badge positive">Đúng giờ</span></td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-violet">VL</span><span><strong>Vũ Lâm</strong><small>Ops</small></span></div></td>
-                    <td>Nghỉ phép</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>0h</td>
-                    <td><span class="status-badge neutral">Nghỉ phép</span></td>
-                  </tr>
-                </tbody>
+                <tbody data-attendance-rows></tbody>
               </table>
             </div>
           </section>

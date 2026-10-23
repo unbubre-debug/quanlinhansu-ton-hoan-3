@@ -52,8 +52,8 @@
             <a href="mailto:support@peoplehub.vn">Liên hệ hỗ trợ <span aria-hidden="true">↗</span></a>
           </div>
           <div class="user-profile">
-            <span class="avatar avatar-violet">ML</span>
-            <span class="user-copy"><strong>Minh Linh</strong><small>Quản trị viên</small></span>
+            <span class="avatar avatar-violet" data-current-user-initials>ML</span>
+            <span class="user-copy"><strong data-current-user-name>Minh Linh</strong><small data-current-user-role>Quản trị viên</small></span>
             <span class="chevron" aria-hidden="true">···</span>
           </div>
         </div>
@@ -65,7 +65,7 @@
           <div class="topbar-actions">
             <span class="sync-status" role="status" aria-label="Dữ liệu minh họa"><span class="sync-label">Bản xem trước</span></span>
             <span class="today-label"><span aria-hidden="true">◷</span><time data-current-date></time></span>
-            <span class="topbar-avatar avatar avatar-violet" role="img" aria-label="Hồ sơ Minh Linh">ML</span>
+            <span class="topbar-avatar avatar avatar-violet" data-current-user-initials role="img" aria-label="Hồ sơ Minh Linh">ML</span>
           </div>
         </header>
 
@@ -74,7 +74,7 @@
             <div>
               <p class="overline">QUẢN LÝ HỒ SƠ NHÂN SỰ</p>
               <h1 id="page-title">Danh sách nhân viên</h1>
-              <p class="page-subtitle">Giao diện mẫu để theo dõi hồ sơ; số liệu không phải dữ liệu nhân sự thực tế.</p>
+              <p class="page-subtitle">Quy mô công ty: 20 hồ sơ trong bộ dữ liệu demo. Chưa kết nối nguồn nhân sự thực tế.</p>
             </div>
             <div class="toolbar-actions">
               <button
@@ -89,19 +89,19 @@
           <section class="summary-row" aria-label="Tổng quan nhân viên">
             <article class="summary-card">
               <div class="summary-label">Tổng nhân viên</div>
-              <div class="summary-number">248 <span>người</span></div>
+              <div class="summary-number"><span data-company-headcount>20</span> <span>người</span></div>
             </article>
             <article class="summary-card">
               <div class="summary-label">Đang làm việc</div>
-              <div class="summary-number">231 <span>93,1%</span></div>
+              <div class="summary-number"><span data-employment-count="active">15</span> <span data-employment-share="active">75%</span></div>
             </article>
             <article class="summary-card">
               <div class="summary-label">Đang thử việc</div>
-              <div class="summary-number">11 <span>4,4%</span></div>
+              <div class="summary-number"><span data-employment-count="onboarding">3</span> <span data-employment-share="onboarding">15%</span></div>
             </article>
             <article class="summary-card">
               <div class="summary-label">Nghỉ phép</div>
-              <div class="summary-number">12 <span>5,2%</span></div>
+              <div class="summary-number"><span data-employment-count="leave">2</span> <span data-employment-share="leave">10%</span></div>
             </article>
           </section>
 
@@ -109,7 +109,7 @@
             <div class="data-header">
               <div>
                 <h2 id="employees-table-title">Nhân sự mới & hiện tại</h2>
-                <p class="page-subtitle">5 hồ sơ minh họa; không đại diện toàn bộ nhân sự</p>
+                <p class="page-subtitle"><span data-directory-count>20</span> nhân viên trong bộ dữ liệu demo; chưa đồng bộ với hệ thống nhân sự thật.</p>
               </div>
             </div>
 
@@ -120,7 +120,7 @@
               </label>
               <label class="table-control">
                 <span>Phòng ban</span>
-                <select data-filter-column="2" aria-label="Lọc theo phòng ban">
+                <select data-filter-column="2" data-filter-departments aria-label="Lọc theo phòng ban">
                   <option value="">Tất cả</option>
                   <option>Thiết kế</option>
                   <option>Công nghệ</option>
@@ -131,7 +131,7 @@
               </label>
               <label class="table-control">
                 <span>Chức vụ</span>
-                <select data-filter-column="1" aria-label="Lọc theo chức vụ">
+                <select data-filter-column="1" data-filter-roles aria-label="Lọc theo chức vụ">
                   <option value="">Tất cả</option>
                   <option>Product Designer</option>
                   <option>Frontend Developer</option>
@@ -142,11 +142,19 @@
               </label>
               <label class="table-control">
                 <span>Trạng thái</span>
-                <select data-filter-column="4" aria-label="Lọc theo trạng thái">
+                <select data-filter-column="4" aria-label="Lọc theo trạng thái" data-employment-filter>
                   <option value="">Tất cả</option>
-                  <option>Đang làm việc</option>
-                  <option>Đang hội nhập</option>
-                  <option>Đang nghỉ phép</option>
+                  <option data-filter-employment="active">Đang làm việc</option>
+                  <option data-filter-employment="onboarding">Đang hội nhập</option>
+                  <option data-filter-employment="leave">Đang nghỉ phép</option>
+                </select>
+              </label>
+              <label class="table-control">
+                <span>Hình thức</span>
+                <select data-filter-column="6" aria-label="Lọc theo hình thức làm việc">
+                  <option value="">Tất cả</option>
+                  <option>Tại văn phòng</option>
+                  <option>Làm từ xa</option>
                 </select>
               </label>
               <label class="table-control">
@@ -183,55 +191,53 @@
                     <th scope="col">Ngày bắt đầu</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col">Quản lý</th>
+                    <th scope="col">Hình thức làm việc</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-coral">HN</span><span><strong>Hoàng Ngọc</strong><small>ngoc.hoang@nova.vn</small></span></div></td>
-                    <td>Product Designer</td>
-                    <td>Thiết kế</td>
-                    <td>24/06/2025</td>
-                    <td><span class="status-badge positive">Đang làm việc</span></td>
-                    <td>Nhật Linh</td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-blue">TA</span><span><strong>Trần Anh</strong><small>anh.tran@nova.vn</small></span></div></td>
-                    <td>Frontend Developer</td>
-                    <td>Công nghệ</td>
-                    <td>20/06/2025</td>
-                    <td><span class="status-badge positive">Đang làm việc</span></td>
-                    <td>Phúc Anh</td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-yellow">LM</span><span><strong>Lê Minh</strong><small>minh.le@nova.vn</small></span></div></td>
-                    <td>Content Executive</td>
-                    <td>Marketing</td>
-                    <td>18/06/2025</td>
-                    <td><span class="status-badge warning">Đang hội nhập</span></td>
-                    <td>Minh Châu</td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-green">PT</span><span><strong>Phạm Thảo</strong><small>thao.pham@nova.vn</small></span></div></td>
-                    <td>Talent Acquisition</td>
-                    <td>Nhân sự</td>
-                    <td>16/06/2025</td>
-                    <td><span class="status-badge positive">Đang làm việc</span></td>
-                    <td>Huy Dũng</td>
-                  </tr>
-                  <tr>
-                    <td><div class="employee-cell"><span class="avatar avatar-violet">VL</span><span><strong>Vũ Lâm</strong><small>lam.vu@nova.vn</small></span></div></td>
-                    <td>Operations Lead</td>
-                    <td>Vận hành</td>
-                    <td>12/06/2025</td>
-                    <td><span class="status-badge neutral">Đang nghỉ phép</span></td>
-                    <td>Thu Hà</td>
-                  </tr>
-                </tbody>
+                <tbody data-employee-directory></tbody>
               </table>
             </div>
           </section>
         </div>
       </main>
     </div>
+    <dialog class="employee-profile-dialog" data-employee-profile-dialog aria-labelledby="profile-dialog-title">
+      <div class="profile-dialog-heading">
+        <div>
+          <p class="overline">HỒ SƠ NHÂN VIÊN · THÁNG 06/2025</p>
+          <h2 id="profile-dialog-title" data-profile-name></h2>
+        </div>
+        <button class="profile-dialog-close" type="button" data-profile-close aria-label="Đóng hồ sơ">×</button>
+      </div>
+      <div class="profile-person">
+        <img class="profile-portrait" data-profile-portrait alt="">
+        <div>
+          <p class="profile-role" data-profile-role></p>
+          <p class="profile-specialty" data-profile-specialty></p>
+          <span class="work-mode-badge" data-profile-work-mode></span>
+        </div>
+      </div>
+      <div class="profile-stats" aria-label="Tổng quan công và lương">
+        <article><span>Ngày công</span><strong data-profile-days></strong><small>/ 22 ngày chuẩn</small></article>
+        <article><span>Tổng giờ làm</span><strong data-profile-hours></strong><small>8 giờ / ngày công</small></article>
+        <article class="profile-salary-stat"><span>Lương thực nhận ước tính</span><strong data-profile-salary></strong><small>Sau phụ cấp, thưởng và bảo hiểm</small></article>
+      </div>
+      <section class="profile-attendance" aria-labelledby="profile-attendance-title">
+        <div class="profile-attendance-heading">
+          <div>
+            <h3 id="profile-attendance-title">Bảng chấm công</h3>
+            <p>Các ngày công chuẩn trong kỳ minh họa</p>
+          </div>
+          <span class="profile-attendance-total" data-profile-attendance-total></span>
+        </div>
+        <div class="profile-attendance-table-wrap">
+          <table class="profile-attendance-table">
+            <thead><tr><th scope="col">Ngày công</th><th scope="col">Trạng thái</th><th scope="col">Giờ làm</th><th scope="col">Tổng giờ</th></tr></thead>
+            <tbody data-profile-attendance-rows></tbody>
+          </table>
+        </div>
+      </section>
+      <p class="profile-demo-note" data-profile-status role="status">Dữ liệu chỉ mang tính minh họa, không phải bảng chấm công hoặc bảng lương chính thức.</p>
+    </dialog>
   </body>
 </html>
