@@ -283,6 +283,7 @@
         attendance: {},
         payrollRows: null,
         toastTimer: null,
+        session: null,
       };
       const routeTitles = {
         dashboard: "Tổng quan",
@@ -357,7 +358,8 @@
       }
 
       function routeTo(route) {
-        const page = routeTitles[route] ? route : "dashboard";
+        const isEmployee = moduleState.session?.role === "employee";
+        const page = isEmployee ? "self" : (routeTitles[route] ? route : "dashboard");
         document.querySelectorAll("[data-page]").forEach((section) => {
           section.hidden = section.dataset.page !== page;
         });
@@ -367,12 +369,14 @@
           if (active) link.setAttribute("aria-current", "page");
           else link.removeAttribute("aria-current");
         });
-        document.querySelector("[data-route-title]").textContent = routeTitles[page];
-        document.title = `${routeTitles[page]} · HRM System`;
+        const title = isEmployee ? "Thông tin của tôi" : routeTitles[page];
+        document.querySelector("[data-route-title]").textContent = title;
+        document.title = `${title} · HRM System`;
         if (page === "employees") renderEmployees();
         if (page === "attendance") renderAttendance();
         if (page === "leave") renderLeaveRequests();
         if (page === "reports") renderReports();
+        if (page === "self") renderEmployeePortal();
         document.querySelector("#app-sidebar").classList.remove("open");
         document.body.classList.remove("menu-open");
         document.querySelector("[data-toggle-sidebar]").setAttribute("aria-expanded", "false");
@@ -477,6 +481,7 @@
         }
         persistModuleData();
         form.closest("dialog").close();
+        form.elements.employeeId.disabled = false;
         moduleState.employeePage = 1;
         refreshDashboard();
         renderEmployees();
@@ -542,6 +547,7 @@
 
       function openLeaveDialog() {
         const form = document.querySelector("[data-leave-form]");
+        form.elements.employeeId.disabled = false;
         form.reset();
         document.querySelector("[data-leave-error]").textContent = "";
         form.elements.from.value = dateKey(today);
@@ -566,7 +572,9 @@
           error.textContent = "Ngày kết thúc phải từ ngày bắt đầu trở đi.";
           return;
         }
-        const employee = employees.find((record) => record.id === data.get("employeeId"));
+        const employeeId = moduleState.session?.role === "employee"
+          ? moduleState.session.employeeId : data.get("employeeId");
+        const employee = employees.find((record) => record.id === employeeId);
         const requestedDays = Math.round((to - from) / 86400000) + 1;
         if (!employee) {
           error.textContent = "Không tìm thấy nhân viên đã chọn.";
@@ -702,9 +710,14 @@
         restoreModuleData();
         refreshDashboard();
         setupPeriodSelects();
+        initializeAuthentication();
         document.querySelectorAll("[data-route]").forEach((link) => link.addEventListener("click", (event) => {
           event.preventDefault();
           const route = link.dataset.route;
+          if (moduleState.session?.role === "employee") {
+            routeTo("self");
+            return;
+          }
           if (location.hash !== `#${route}`) location.hash = route;
           else routeTo(route);
         }));
@@ -796,6 +809,136 @@
           if (event.target === event.currentTarget) event.currentTarget.close();
         });
         document.querySelector("[data-calculate-payroll]").addEventListener("click", calculatePayroll);
+        document.querySelector("[data-open-own-leave]").addEventListener("click", () => {
+          openLeaveDialog();
+          if (document.querySelector("[data-leave-dialog]").open) {
+            document.querySelector("[data-leave-employee]").value = moduleState.session.employeeId;
+            document.querySelector("[data-leave-employee]").disabled = true;
+          }
+        });
+      }
+
+      function setAuthenticationRole(role) {
+        const isEmployee = role === "employee";
+        document.querySelectorAll("[data-auth-role]").forEach((button) => {
+          const active = button.dataset.authRole === role;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-selected", String(active));
+        });
+        const identity = document.querySelector("[data-auth-form]").elements.identity;
+        document.querySelector("[data-auth-identity-label]").firstChild.textContent = isEmployee ? "Mã nhân viên hoặc email" : "Tài khoản quản trị";
+        identity.placeholder = isEmployee ? "NV001 hoặc nv001@hrm.vn" : "admin";
+        document.querySelector("[data-auth-hint]").textContent = isEmployee
+          ? "Demo nhân viên: NV001 / Staff123!"
+          : "Demo quản trị viên: admin / 123";
+        document.querySelector("[data-auth-error]").textContent = "";
+        document.querySelector("[data-auth-form]").dataset.role = role;
+      }
+
+      function openAuthenticatedApp(session) {
+        moduleState.session = session;
+        document.querySelector("[data-auth-screen]").hidden = true;
+        document.querySelector("[data-app-shell]").hidden = false;
+        document.querySelectorAll(".admin-navigation").forEach((element) => { element.hidden = session.role !== "admin"; });
+        document.querySelectorAll(".employee-navigation").forEach((element) => { element.hidden = session.role !== "employee"; });
+        const name = session.role === "admin" ? "Minh Linh" : session.employee.name;
+        const role = session.role === "admin" ? "Quản trị viên" : "Nhân viên";
+        document.querySelector("[data-session-name]").textContent = name;
+        document.querySelector("[data-session-role]").textContent = role;
+        document.querySelector("[data-session-avatar]").textContent = initials(name);
+        document.querySelector("[data-topbar-avatar]").textContent = initials(name);
+        document.querySelector("[data-topbar-avatar]").setAttribute("aria-label", name);
+        if (session.role === "employee") {
+          history.replaceState(null, "", `${location.pathname}${location.search}#self`);
+          routeTo("self");
+        } else {
+          history.replaceState(null, "", `${location.pathname}${location.search}#dashboard`);
+          routeTo("dashboard");
+        }
+      }
+
+      function initializeAuthentication() {
+        document.querySelectorAll("[data-auth-role]").forEach((button) =>
+          button.addEventListener("click", () => setAuthenticationRole(button.dataset.authRole)),
+        );
+        document.querySelector("[data-auth-form]").addEventListener("submit", (event) => {
+          event.preventDefault();
+          const form = event.currentTarget;
+          const identity = String(new FormData(form).get("identity")).trim();
+          const password = String(new FormData(form).get("password"));
+          const role = form.dataset.role || "admin";
+          const error = document.querySelector("[data-auth-error]");
+          let session = null;
+          if (role === "admin" && identity.trim().toLowerCase() === "admin" && password === "123") {
+            session = { role: "admin" };
+          } else if (role === "employee" && password === "Staff123!") {
+            const employee = employees.find((record) =>
+              record.status !== "inactive" &&
+              (record.id.toLowerCase() === identity.toLowerCase() || record.email.toLowerCase() === identity.toLowerCase()),
+            );
+            if (employee) session = { role: "employee", employeeId: employee.id, employee };
+          }
+          if (!session) {
+            error.textContent = role === "employee"
+              ? "Thông tin đăng nhập chưa đúng hoặc tài khoản không còn hoạt động."
+              : "Email hoặc mật khẩu quản trị viên chưa chính xác.";
+            return;
+          }
+          try {
+            sessionStorage.setItem("hrm-session", JSON.stringify({ role: session.role, employeeId: session.employeeId || "" }));
+          } catch (storageError) {
+            console.error("Không thể lưu phiên đăng nhập.", storageError);
+            error.textContent = "Trình duyệt không cho phép tạo phiên đăng nhập.";
+            return;
+          }
+          form.reset();
+          openAuthenticatedApp(session);
+        });
+        document.querySelector("[data-logout]").addEventListener("click", () => {
+          try {
+            sessionStorage.removeItem("hrm-session");
+          } catch (error) {
+            console.error("Không thể xóa phiên đăng nhập.", error);
+          }
+          moduleState.session = null;
+          document.querySelector("[data-app-shell]").hidden = true;
+          document.querySelector("[data-auth-screen]").hidden = false;
+          setAuthenticationRole("admin");
+          document.querySelector("[data-auth-form]").reset();
+        });
+        setAuthenticationRole("admin");
+        try {
+          const saved = JSON.parse(sessionStorage.getItem("hrm-session") || "null");
+          if (saved?.role === "admin") openAuthenticatedApp({ role: "admin" });
+          if (saved?.role === "employee") {
+            const employee = employees.find((record) => record.id === saved.employeeId && record.status !== "inactive");
+            if (employee) openAuthenticatedApp({ role: "employee", employeeId: employee.id, employee });
+          }
+        } catch (error) {
+          console.error("Không thể khôi phục phiên đăng nhập.", error);
+        }
+      }
+
+      function renderEmployeePortal() {
+        const employee = moduleState.session?.employee;
+        if (!employee) return;
+        document.querySelector("[data-personal-avatar]").textContent = initials(employee.name);
+        document.querySelector("[data-personal-name]").textContent = employee.name;
+        document.querySelector("[data-personal-role]").textContent = `${employee.role} · ${employee.department}`;
+        document.querySelector("[data-personal-id]").textContent = employee.id;
+        document.querySelector("[data-personal-department]").textContent = employee.department;
+        document.querySelector("[data-personal-email]").textContent = employee.email;
+        document.querySelector("[data-personal-start]").textContent = formatDate(new Date(employee.start));
+        document.querySelector("[data-own-leave-balance]").textContent = `${Number(employee.leaveBalance || 0)} ngày`;
+        document.querySelector("[data-own-salary]").textContent = formatCurrency(employee.base);
+        const key = periodKey(today.getMonth() + 1, today.getFullYear());
+        document.querySelector("[data-own-attendance]").textContent = `${Number(getAttendance(employee, key).days).toFixed(1)} ngày`;
+        const ownRequests = leaveRequests.filter((request) => request.employeeId === employee.id)
+          .sort((first, second) => second.from - first.from);
+        document.querySelector("[data-own-leave-rows]").innerHTML = ownRequests.length ? ownRequests.map((request) => {
+          const statusClass = { "Chờ duyệt": "status-pending", "Đã duyệt": "status-active", "Từ chối": "status-inactive" }[request.status];
+          return `<tr><td>${escapeHtml(request.type)}</td><td>${formatDate(request.from)}${sameDate(request.from, request.to) ? "" : ` – ${formatDate(request.to)}`}</td><td>${countLeaveDays(request)} ngày</td><td>${escapeHtml(request.reason || "—")}</td><td><span class="status-pill ${statusClass}">${escapeHtml(request.status)}</span></td></tr>`;
+        }).join("") : '<tr><td colspan="5" class="empty-cell">Bạn chưa gửi yêu cầu nào.</td></tr>';
       }
 
       initializeDashboard();

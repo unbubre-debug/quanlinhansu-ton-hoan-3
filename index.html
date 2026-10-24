@@ -9,7 +9,26 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div class="app-shell">
+    <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
+      <div class="auth-brand"><span class="brand-mark" aria-hidden="true">H</span><span>HRM <b>System</b></span></div>
+      <main class="auth-card">
+        <div class="auth-heading"><p class="eyebrow">CỔNG THÔNG TIN NHÂN SỰ</p><h1 id="auth-title">Đăng nhập hệ thống</h1><p>Chọn đúng khu vực để tiếp tục.</p></div>
+        <div class="auth-tabs" role="tablist" aria-label="Loại tài khoản">
+          <button class="auth-tab active" type="button" role="tab" aria-selected="true" data-auth-role="admin">Quản trị viên</button>
+          <button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-role="employee">Nhân viên</button>
+        </div>
+        <form class="auth-form" data-auth-form>
+          <label class="form-field" data-auth-identity-label>Tài khoản quản trị<input name="identity" type="text" autocomplete="username" required placeholder="admin"></label>
+          <label class="form-field" data-auth-password-label>Mật khẩu<input name="password" type="password" autocomplete="current-password" required placeholder="Nhập mật khẩu"></label>
+          <p class="auth-hint" data-auth-hint>Demo: admin / 123</p>
+          <p class="form-error auth-error" data-auth-error role="alert" aria-live="polite"></p>
+          <button class="action-button primary auth-submit" type="submit">Đăng nhập <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-footnote">Bản trình diễn giao diện · Không dùng cho dữ liệu thật</p>
+      </main>
+      <p class="auth-copyright">© 2026 HRM System</p>
+    </section>
+    <div class="app-shell" data-app-shell hidden>
       <aside class="sidebar" id="app-sidebar" aria-label="Thanh điều hướng">
         <div class="sidebar-header">
           <a class="brand" href="#" aria-label="HRM System - Tổng quan">
@@ -24,18 +43,20 @@
           <span class="workspace-arrow" aria-hidden="true">⌄</span>
         </div>
         <nav class="side-nav" aria-label="Điều hướng chính">
-          <p class="nav-label">TỔNG QUAN</p>
-          <a class="nav-link active" href="#dashboard" data-route="dashboard" aria-current="page"><span class="nav-icon" aria-hidden="true">▦</span><span>Tổng quan</span></a>
-          <p class="nav-label">QUẢN LÝ NHÂN SỰ</p>
-          <a class="nav-link" href="#employees" data-route="employees"><span class="nav-icon" aria-hidden="true">♙</span><span>Nhân viên</span></a>
-          <a class="nav-link" href="#attendance" data-route="attendance"><span class="nav-icon" aria-hidden="true">◷</span><span>Chấm công</span></a>
-          <a class="nav-link" href="#leave" data-route="leave"><span class="nav-icon" aria-hidden="true">♡</span><span>Nghỉ phép</span><span class="nav-badge" data-pending-badge>0</span></a>
-          <a class="nav-link" href="#payroll" data-route="payroll"><span class="nav-icon" aria-hidden="true">₫</span><span>Tiền lương</span></a>
-          <a class="nav-link" href="#reports" data-route="reports"><span class="nav-icon" aria-hidden="true">▤</span><span>Báo cáo</span></a>
+          <p class="nav-label admin-navigation">TỔNG QUAN</p>
+          <a class="nav-link active admin-navigation" href="#dashboard" data-route="dashboard" aria-current="page"><span class="nav-icon" aria-hidden="true">▦</span><span>Tổng quan</span></a>
+          <p class="nav-label admin-navigation">QUẢN LÝ NHÂN SỰ</p>
+          <a class="nav-link admin-navigation" href="#employees" data-route="employees"><span class="nav-icon" aria-hidden="true">♙</span><span>Nhân viên</span></a>
+          <a class="nav-link admin-navigation" href="#attendance" data-route="attendance"><span class="nav-icon" aria-hidden="true">◷</span><span>Chấm công</span></a>
+          <a class="nav-link admin-navigation" href="#leave" data-route="leave"><span class="nav-icon" aria-hidden="true">♡</span><span>Nghỉ phép</span><span class="nav-badge" data-pending-badge>0</span></a>
+          <a class="nav-link admin-navigation" href="#payroll" data-route="payroll"><span class="nav-icon" aria-hidden="true">₫</span><span>Tiền lương</span></a>
+          <a class="nav-link admin-navigation" href="#reports" data-route="reports"><span class="nav-icon" aria-hidden="true">▤</span><span>Báo cáo</span></a>
+          <p class="nav-label employee-navigation" hidden>CÁ NHÂN</p>
+          <a class="nav-link employee-navigation" href="#self" data-route="self" hidden><span class="nav-icon" aria-hidden="true">♙</span><span>Thông tin của tôi</span></a>
         </nav>
         <div class="sidebar-bottom">
           <div class="help-card"><strong>✦ &nbsp;Quản lý hiệu quả</strong><p>Mọi dữ liệu nhân sự trong một nơi.</p></div>
-          <div class="user-profile"><span class="avatar">ML</span><span class="user-copy"><strong>Minh Linh</strong><small>Quản trị viên</small></span><span aria-hidden="true">···</span></div>
+          <div class="user-profile"><span class="avatar" data-session-avatar>ML</span><span class="user-copy"><strong data-session-name>Minh Linh</strong><small data-session-role>Quản trị viên</small></span><button class="logout-button" type="button" data-logout>Đăng xuất</button></div>
         </div>
       </aside>
       <button class="sidebar-overlay" type="button" data-close-sidebar aria-label="Đóng menu"></button>
@@ -49,7 +70,7 @@
           <div class="topbar-actions">
             <span class="today-label"><span class="today-dot" aria-hidden="true"></span><time data-current-date></time></span>
             <button class="icon-button" type="button" data-theme-toggle aria-label="Chuyển sang giao diện tối" title="Chuyển Light/Dark mode"><span data-theme-icon aria-hidden="true">☾</span></button>
-            <span class="avatar" aria-label="Minh Linh">ML</span>
+            <span class="avatar" data-topbar-avatar aria-label="Minh Linh">ML</span>
           </div>
         </header>
 
@@ -121,10 +142,18 @@
                   <h3 data-selected-date></h3>
                   <div class="leave-chips" data-selected-leaves></div>
                 </section>
+
                 <div class="calendar-legend"><span class="day-indicator" aria-hidden="true"></span> Có nhân viên nghỉ phép</div>
               </article>
             </div>
             <footer class="footer">© 2026 HRM System <span aria-hidden="true">·</span> Quản lý nhân sự & tiền lương</footer>
+          </section>
+
+          <section class="module-view employee-portal" data-page="self" hidden aria-labelledby="self-title">
+            <div class="module-heading"><div><p class="eyebrow">KHÔNG GIAN CÁ NHÂN</p><h1 id="self-title">Thông tin của tôi</h1><p class="page-subtitle">Xem hồ sơ và gửi yêu cầu trực tiếp đến quản trị viên.</p></div><button class="action-button primary" type="button" data-open-own-leave>＋ Gửi yêu cầu nghỉ phép</button></div>
+            <article class="panel personal-card"><div class="personal-avatar" data-personal-avatar>NV</div><div class="personal-info"><span class="status-pill status-active">Hồ sơ nhân viên</span><h2 data-personal-name>Nhân viên</h2><p data-personal-role></p><div class="personal-meta"><span><small>Mã nhân viên</small><strong data-personal-id></strong></span><span><small>Phòng ban</small><strong data-personal-department></strong></span><span><small>Email</small><strong data-personal-email></strong></span><span><small>Ngày vào làm</small><strong data-personal-start></strong></span></div></div></article>
+            <div class="summary-cards employee-summary"><article class="summary-card"><span class="summary-icon blue">◷</span><div><small>Ngày công kỳ này</small><strong data-own-attendance>—</strong></div></article><article class="summary-card"><span class="summary-icon green">♡</span><div><small>Phép năm còn lại</small><strong data-own-leave-balance>—</strong></div></article><article class="summary-card"><span class="summary-icon purple">₫</span><div><small>Lương cơ bản</small><strong data-own-salary>—</strong></div></article></div>
+            <article class="panel data-panel"><div class="module-panel-heading"><div><h2>Yêu cầu của tôi</h2><p>Trạng thái xử lý các yêu cầu gửi đến quản trị viên.</p></div><a class="contact-admin" href="mailto:admin@hrm.vn?subject=Ho%20tro%20HRM">✉ Liên hệ quản trị viên</a></div><div class="table-scroll"><table class="module-table"><thead><tr><th>LOẠI YÊU CẦU</th><th>THỜI GIAN</th><th>SỐ NGÀY</th><th>LÝ DO</th><th>TRẠNG THÁI</th></tr></thead><tbody data-own-leave-rows></tbody></table></div></article>
           </section>
 
           <section class="module-view" data-page="employees" hidden>
