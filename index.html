@@ -4,141 +4,201 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f8fafc">
-    <meta name="description" content="Hệ thống quản lý nhân sự, chấm công, nghỉ phép và tiền lương.">
-    <title>HRM System — Quản lý nhân sự</title>
+    <meta name="description" content="Tổng quan quản lý nhân sự và tiền lương HRM System.">
+    <title>Tổng quan — HRM System</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <div class="app-shell">
       <aside class="sidebar" id="app-sidebar" aria-label="Thanh điều hướng">
-        <div class="sidebar-brand-row">
-          <a class="brand" href="#dashboard" aria-label="HRM System - Dashboard">
+        <div class="sidebar-header">
+          <a class="brand" href="#" aria-label="HRM System - Tổng quan">
             <span class="brand-mark" aria-hidden="true">H</span>
-            <span class="brand-name">HRM <span>System</span></span>
+            <span>HRM <span>System</span></span>
           </a>
-          <button class="sidebar-collapse" type="button" data-sidebar-collapse aria-label="Thu gọn thanh điều hướng" title="Thu gọn thanh điều hướng"><span aria-hidden="true">‹</span></button>
+          <button class="collapse-button" type="button" data-collapse-sidebar aria-label="Thu gọn thanh điều hướng" title="Thu gọn menu">‹</button>
         </div>
-        <div class="workspace-switcher">
+        <div class="workspace">
           <span class="workspace-mark" aria-hidden="true">N</span>
-          <span class="workspace-name"><strong>Nova Creative</strong><small>Không gian làm việc</small></span>
-          <span class="workspace-chevron" aria-hidden="true">⌄</span>
+          <span class="workspace-copy"><strong>Nova Creative</strong><small>Không gian làm việc</small></span>
+          <span class="workspace-arrow" aria-hidden="true">⌄</span>
         </div>
         <nav class="side-nav" aria-label="Điều hướng chính">
           <p class="nav-label">TỔNG QUAN</p>
-          <a class="nav-link is-active" href="#dashboard" data-route="dashboard" aria-current="page"><span class="nav-icon" aria-hidden="true">▦</span><span>Dashboard</span></a>
-          <p class="nav-label">QUẢN LÝ</p>
+          <a class="nav-link active" href="#dashboard" data-route="dashboard" aria-current="page"><span class="nav-icon" aria-hidden="true">▦</span><span>Tổng quan</span></a>
+          <p class="nav-label">QUẢN LÝ NHÂN SỰ</p>
           <a class="nav-link" href="#employees" data-route="employees"><span class="nav-icon" aria-hidden="true">♙</span><span>Nhân viên</span></a>
           <a class="nav-link" href="#attendance" data-route="attendance"><span class="nav-icon" aria-hidden="true">◷</span><span>Chấm công</span></a>
-          <a class="nav-link" href="#leave" data-route="leave"><span class="nav-icon" aria-hidden="true">♡</span><span>Nghỉ phép</span><span class="nav-count" data-pending-count>0</span></a>
+          <a class="nav-link" href="#leave" data-route="leave"><span class="nav-icon" aria-hidden="true">♡</span><span>Nghỉ phép</span><span class="nav-badge" data-pending-badge>0</span></a>
           <a class="nav-link" href="#payroll" data-route="payroll"><span class="nav-icon" aria-hidden="true">₫</span><span>Tiền lương</span></a>
           <a class="nav-link" href="#reports" data-route="reports"><span class="nav-icon" aria-hidden="true">▤</span><span>Báo cáo</span></a>
         </nav>
         <div class="sidebar-bottom">
-          <div class="sidebar-note"><span class="note-icon" aria-hidden="true">✦</span><strong>Quản lý hiệu quả</strong><p>Mọi dữ liệu nhân sự trong một nơi.</p></div>
-          <div class="user-profile"><span class="avatar avatar-admin">ML</span><span class="user-copy"><strong>Minh Linh</strong><small>Quản trị viên</small></span><span class="user-menu" aria-hidden="true">···</span></div>
+          <div class="help-card"><strong>✦ &nbsp;Quản lý hiệu quả</strong><p>Mọi dữ liệu nhân sự trong một nơi.</p></div>
+          <div class="user-profile"><span class="avatar">ML</span><span class="user-copy"><strong>Minh Linh</strong><small>Quản trị viên</small></span><span aria-hidden="true">···</span></div>
         </div>
       </aside>
-      <button class="sidebar-overlay" type="button" data-sidebar-close aria-label="Đóng menu"></button>
+      <button class="sidebar-overlay" type="button" data-close-sidebar aria-label="Đóng menu"></button>
 
       <main class="main-area">
         <header class="topbar">
           <div class="topbar-start">
-            <button class="icon-button menu-toggle" type="button" data-sidebar-toggle aria-label="Mở menu" aria-expanded="false" aria-controls="app-sidebar"><span aria-hidden="true">☰</span></button>
-            <div class="breadcrumb"><span>Không gian làm việc</span><span aria-hidden="true">/</span><strong data-route-title>Dashboard</strong></div>
+            <button class="icon-button menu-toggle" type="button" data-toggle-sidebar aria-label="Mở menu" aria-expanded="false" aria-controls="app-sidebar"><span aria-hidden="true">☰</span></button>
+            <div class="breadcrumb"><span>Không gian làm việc</span><span aria-hidden="true">/</span><strong data-route-title>Tổng quan</strong></div>
           </div>
           <div class="topbar-actions">
             <span class="today-label"><span class="today-dot" aria-hidden="true"></span><time data-current-date></time></span>
-            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Chuyển sang giao diện tối" title="Chuyển giao diện"><span aria-hidden="true">☾</span></button>
-            <span class="topbar-avatar" aria-label="Minh Linh">ML</span>
+            <button class="icon-button" type="button" data-theme-toggle aria-label="Chuyển sang giao diện tối" title="Chuyển Light/Dark mode"><span data-theme-icon aria-hidden="true">☾</span></button>
+            <span class="avatar" aria-label="Minh Linh">ML</span>
           </div>
         </header>
 
         <div class="page-content">
-          <section class="page-view" data-route-view="dashboard">
-            <div class="page-heading"><div><p class="eyebrow">TỔNG QUAN NHÂN SỰ</p><h1>Chào buổi sáng, Minh Linh <span aria-hidden="true">✦</span></h1><p class="page-subtitle">Đây là tình hình hoạt động của công ty bạn hôm nay.</p></div><span class="date-chip"><span aria-hidden="true">▣</span><time data-current-date-short></time></span></div>
-            <div class="stats-grid">
-              <article class="stat-card"><div class="stat-card-top"><span class="stat-icon icon-blue" aria-hidden="true">♙</span><span class="trend trend-up">↑ 8.2%</span></div><p>Tổng nhân viên</p><strong data-stat-employees>0</strong><small>Đang làm việc tại công ty</small></article>
-              <article class="stat-card"><div class="stat-card-top"><span class="stat-icon icon-green" aria-hidden="true">✚</span><span class="trend trend-up">Tháng này</span></div><p>Nhân viên mới tháng này</p><strong data-stat-new-hires>0</strong><small>Nhân sự gia nhập đội ngũ</small></article>
-              <article class="stat-card"><div class="stat-card-top"><span class="stat-icon icon-violet" aria-hidden="true">₫</span><span class="trend trend-neutral">Kỳ hiện tại</span></div><p>Quỹ lương tháng</p><strong class="stat-currency" data-stat-payroll>—</strong><small>Tổng thu nhập trước khấu trừ</small></article>
-              <article class="stat-card"><div class="stat-card-top"><span class="stat-icon icon-orange" aria-hidden="true">♡</span><span class="trend trend-alert" data-leave-trend>Chờ xử lý</span></div><p>Đơn nghỉ phép chờ duyệt</p><strong data-stat-pending>0</strong><small>Cần được xem xét</small></article>
+          <section data-page="dashboard" aria-labelledby="page-title">
+            <div class="page-heading">
+              <div><p class="eyebrow">TỔNG QUAN NHÂN SỰ</p><h1 id="page-title">Tổng quan</h1><p class="page-subtitle">Chào buổi sáng, Minh Linh. Đây là tình hình hoạt động hôm nay.</p></div>
             </div>
-            <div class="dashboard-grid">
-              <article class="panel chart-panel">
-                <div class="panel-heading"><div><h2>Quỹ lương 6 tháng gần nhất</h2><p>Thống kê tổng thực lĩnh · đơn vị triệu đồng</p></div><span class="panel-tag"><span class="legend-dot"></span>Quỹ lương</span></div>
-                <div class="chart" aria-label="Biểu đồ cột quỹ lương sáu tháng gần nhất"><div class="chart-axis" aria-hidden="true"><span>500</span><span>400</span><span>300</span><span>200</span><span>100</span><span>0</span></div><div class="chart-main"><div class="chart-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="chart-bars" data-chart-bars></div></div></div>
+
+            <div class="stats-grid" aria-label="Chỉ số tổng quan">
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-icon icon-blue" aria-hidden="true">♙</span><span class="change up">↑ 8,2%</span></div>
+                <p class="stat-label">Tổng nhân viên</p><strong class="stat-value" data-stat-headcount>0</strong><small class="stat-foot">So với tháng trước</small>
               </article>
-              <article class="panel activity-panel"><div class="panel-heading"><div><h2>Hoạt động gần đây</h2><p>Cập nhật mới nhất trong hệ thống</p></div><span class="more-mark" aria-hidden="true">···</span></div><div class="activity-table-wrap"><table class="activity-table"><thead><tr><th>HOẠT ĐỘNG</th><th>THỜI GIAN</th></tr></thead><tbody data-activity-list></tbody></table></div></article>
-              <article class="panel upcoming-panel"><div class="panel-heading"><div><h2>Nghỉ phép sắp tới</h2><p>Lịch nghỉ đã đăng ký</p></div><button class="text-link" type="button" data-go-route="leave">Xem tất cả <span aria-hidden="true">→</span></button></div><div class="upcoming-list" data-upcoming-leaves></div></article>
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-icon icon-green" aria-hidden="true">✚</span><span class="change up">↑ 12,5%</span></div>
+                <p class="stat-label">Nhân viên mới tháng này</p><strong class="stat-value" data-stat-new-hires>0</strong><small class="stat-foot">So với tháng trước</small>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-icon icon-purple" aria-hidden="true">₫</span><span class="change up">↑ 5,4%</span></div>
+                <p class="stat-label">Quỹ lương tháng này</p><strong class="stat-value currency" data-stat-payroll>—</strong><small class="stat-foot">So với tháng trước</small>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top"><span class="stat-icon icon-amber" aria-hidden="true">♡</span><span class="change down">↓ 16,7%</span></div>
+                <p class="stat-label">Đơn nghỉ phép chờ duyệt</p><strong class="stat-value" data-stat-pending>0</strong><small class="stat-foot">So với tháng trước</small>
+              </article>
             </div>
-          </section>
 
-          <section class="page-view" data-route-view="employees" hidden>
-            <div class="page-heading"><div><p class="eyebrow">HỒ SƠ & ĐỘI NGŨ</p><h1>Quản lý nhân viên</h1><p class="page-subtitle">Quản lý hồ sơ, phòng ban, vị trí và trạng thái nhân sự.</p></div><button class="button button-primary" type="button" data-open-employee><span aria-hidden="true">＋</span> Thêm nhân viên</button></div>
-            <div class="panel table-panel"><div class="table-toolbar"><label class="search-field"><span aria-hidden="true">⌕</span><input type="search" placeholder="Tìm theo tên, mã, email..." aria-label="Tìm kiếm nhân viên" data-employee-search></label><label class="select-field"><span class="sr-only">Phòng ban</span><select aria-label="Lọc phòng ban" data-employee-department><option value="">Tất cả phòng ban</option></select></label><label class="select-field"><span class="sr-only">Trạng thái</span><select aria-label="Lọc trạng thái" data-employee-status><option value="">Tất cả trạng thái</option><option value="active">Đang làm việc</option><option value="probation">Thử việc</option><option value="inactive">Đã nghỉ</option></select></label><span class="result-count" data-employee-count></span></div>
-              <div class="table-wrap"><table><thead><tr><th>NHÂN VIÊN</th><th>MÃ NV</th><th>PHÒNG BAN</th><th>VỊ TRÍ</th><th>NGÀY VÀO LÀM</th><th>LƯƠNG CƠ BẢN</th><th>TRẠNG THÁI</th><th></th></tr></thead><tbody data-employee-rows></tbody></table></div><div class="pagination"><span data-employee-pagination>—</span><div><button class="page-button" type="button" data-employee-prev aria-label="Trang trước">‹</button><button class="page-button" type="button" data-employee-next aria-label="Trang sau">›</button></div></div>
+            <div class="charts-grid">
+              <article class="panel chart-panel" aria-labelledby="salary-title">
+                <div class="panel-heading"><div><h2 id="salary-title">Quỹ lương 6 tháng gần nhất</h2><p>Tổng quỹ lương theo tháng · triệu đồng</p></div><span class="period-tag"><span class="legend-dot"></span>Quỹ lương</span></div>
+                <div class="bar-chart" role="img" aria-label="Biểu đồ cột quỹ lương trong sáu tháng gần đây">
+                  <div class="bar-y-axis" aria-hidden="true"><span>500</span><span>400</span><span>300</span><span>200</span><span>100</span><span>0</span></div>
+                  <div class="bar-plot"><div class="bar-gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="bar-groups" data-salary-chart></div></div>
+                </div>
+              </article>
+              <article class="panel department-panel" aria-labelledby="department-title">
+                <div class="panel-heading"><div><h2 id="department-title">Nhân viên theo phòng ban</h2><p>Cơ cấu nhân sự hiện tại</p></div><span class="period-tag">Tổng thể</span></div>
+                <div class="department-content">
+                  <div class="donut-wrap" role="img" data-donut-chart aria-label="Biểu đồ tròn nhân viên theo phòng ban">
+                    <div class="donut" data-donut aria-hidden="true"></div>
+                    <div class="donut-center"><strong data-donut-total>0</strong><span>nhân viên</span></div>
+                  </div>
+                  <div class="department-legend" data-department-legend aria-label="Chú giải phòng ban"></div>
+                </div>
+              </article>
             </div>
+
+            <div class="bottom-grid">
+              <article class="panel activity-panel" aria-labelledby="activity-title">
+                <div class="panel-inner">
+                  <div class="panel-heading"><div><h2 id="activity-title">Hoạt động gần đây</h2><p>Các cập nhật mới nhất trong hệ thống</p></div><span class="period-tag">Mới nhất</span></div>
+                  <div class="activity-table-wrap">
+                    <table>
+                      <thead><tr><th>HOẠT ĐỘNG</th><th>NHÂN VIÊN</th><th>THỜI GIAN</th></tr></thead>
+                      <tbody data-activity-table></tbody>
+                    </table>
+                  </div>
+                </div>
+              </article>
+              <article class="panel calendar-panel" aria-labelledby="calendar-title">
+                <div class="calendar-heading">
+                  <div><h2 id="calendar-title">Lịch nghỉ phép</h2><p>Chọn ngày để xem nhân viên nghỉ</p></div>
+                  <div class="month-controls"><button class="month-button" type="button" data-previous-month aria-label="Tháng trước">‹</button><button class="month-button" type="button" data-next-month aria-label="Tháng sau">›</button></div>
+                </div>
+                <p class="calendar-month-title" data-calendar-month></p>
+                <div class="calendar-grid" data-calendar-grid role="grid" aria-label="Lịch nghỉ phép tháng hiện tại"></div>
+                <section class="calendar-detail" aria-live="polite" aria-label="Chi tiết nghỉ phép trong ngày">
+                  <h3 data-selected-date></h3>
+                  <div class="leave-chips" data-selected-leaves></div>
+                </section>
+                <div class="calendar-legend"><span class="day-indicator" aria-hidden="true"></span> Có nhân viên nghỉ phép</div>
+              </article>
+            </div>
+            <footer class="footer">© 2026 HRM System <span aria-hidden="true">·</span> Quản lý nhân sự & tiền lương</footer>
           </section>
 
-          <section class="page-view" data-route-view="attendance" hidden>
-            <div class="page-heading"><div><p class="eyebrow">THỜI GIAN & CA LÀM</p><h1>Quản lý chấm công</h1><p class="page-subtitle">Theo dõi ngày công và giờ tăng ca theo kỳ.</p></div><div class="period-picker"><label><span class="sr-only">Tháng chấm công</span><select data-attendance-month></select></label><label><span class="sr-only">Năm chấm công</span><select data-attendance-year></select></label></div></div>
-            <div class="summary-strip"><article class="summary-tile"><span class="summary-symbol icon-blue">♙</span><div><small>Tổng nhân viên</small><strong data-attendance-headcount>0</strong></div></article><article class="summary-tile"><span class="summary-symbol icon-green">✓</span><div><small>Tổng ngày công</small><strong data-attendance-days>0</strong></div></article><article class="summary-tile"><span class="summary-symbol icon-violet">◷</span><div><small>Tổng giờ tăng ca</small><strong data-attendance-overtime>0 giờ</strong></div></article></div>
-            <div class="panel table-panel"><div class="panel-heading table-panel-heading"><div><h2>Bảng chấm công</h2><p>Điều chỉnh ngày công và giờ tăng ca cho từng nhân viên.</p></div><span class="autosave-note"><span class="autosave-dot"></span>Lưu tự động</span></div><div class="table-wrap"><table><thead><tr><th>NHÂN VIÊN</th><th>PHÒNG BAN</th><th>NGÀY CÔNG</th><th>TĂNG CA (GIỜ)</th><th>GHI CHÚ</th></tr></thead><tbody data-attendance-rows></tbody></table></div></div>
+          <section class="module-view" data-page="employees" hidden>
+            <div class="module-heading"><div><p class="eyebrow">HỒ SƠ & ĐỘI NGŨ</p><h1>Quản lý nhân viên</h1><p class="page-subtitle">Quản lý hồ sơ, phòng ban, vị trí và trạng thái nhân sự.</p></div><button class="action-button primary" type="button" data-open-employee>＋ Thêm nhân viên</button></div>
+            <article class="panel data-panel">
+              <div class="module-toolbar">
+                <label class="search-box"><span aria-hidden="true">⌕</span><input type="search" placeholder="Tìm theo tên nhân viên..." aria-label="Tìm kiếm nhân viên" data-employee-search></label>
+                <label><span class="sr-only">Lọc phòng ban</span><select class="filter-select" aria-label="Lọc phòng ban" data-department-filter><option value="">Tất cả phòng ban</option></select></label>
+                <label><span class="sr-only">Lọc trạng thái</span><select class="filter-select" aria-label="Lọc trạng thái" data-status-filter><option value="">Tất cả trạng thái</option><option value="active">Đang làm việc</option><option value="probation">Thử việc</option><option value="inactive">Đã nghỉ</option></select></label>
+                <span class="record-count" data-employee-record-count></span>
+              </div>
+              <div class="table-scroll"><table class="module-table employee-table"><thead><tr><th>ẢNH & HỌ TÊN</th><th>MÃ NV</th><th>PHÒNG BAN</th><th>VỊ TRÍ</th><th>NGÀY VÀO LÀM</th><th>LƯƠNG CƠ BẢN</th><th>TRẠNG THÁI</th><th>HÀNH ĐỘNG</th></tr></thead><tbody data-employee-rows></tbody></table></div>
+              <div class="table-pagination"><span data-employee-pagination></span><div><button class="pagination-button" type="button" data-employee-prev aria-label="Trang trước">‹</button><button class="pagination-button" type="button" data-employee-next aria-label="Trang sau">›</button></div></div>
+            </article>
           </section>
 
-          <section class="page-view" data-route-view="leave" hidden>
-            <div class="page-heading"><div><p class="eyebrow">ĐƠN TỪ & LỊCH NGHỈ</p><h1>Quản lý nghỉ phép</h1><p class="page-subtitle">Tiếp nhận và xử lý yêu cầu nghỉ phép của nhân viên.</p></div><button class="button button-primary" type="button" data-open-leave><span aria-hidden="true">＋</span> Tạo đơn nghỉ phép</button></div>
-            <div class="summary-strip leave-summary"><article class="summary-tile"><span class="summary-symbol icon-orange">◷</span><div><small>Chờ duyệt</small><strong data-leave-pending>0</strong></div></article><article class="summary-tile"><span class="summary-symbol icon-green">✓</span><div><small>Đã duyệt</small><strong data-leave-approved>0</strong></div></article><article class="summary-tile"><span class="summary-symbol icon-blue">♡</span><div><small>Ngày phép còn lại</small><strong data-leave-balance>0 ngày</strong></div></article></div>
-            <div class="panel table-panel"><div class="panel-heading table-panel-heading"><div><h2>Danh sách đơn nghỉ phép</h2><p>Danh sách yêu cầu và trạng thái xét duyệt.</p></div><label class="select-field"><span class="sr-only">Lọc trạng thái nghỉ phép</span><select aria-label="Lọc trạng thái đơn nghỉ" data-leave-filter><option value="">Tất cả đơn</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></label></div><div class="table-wrap"><table><thead><tr><th>NHÂN VIÊN</th><th>LOẠI NGHỈ</th><th>THỜI GIAN</th><th>SỐ NGÀY</th><th>PHÉP CÒN LẠI</th><th>LÝ DO</th><th>TRẠNG THÁI</th><th>THAO TÁC</th></tr></thead><tbody data-leave-rows></tbody></table></div></div>
+          <section class="module-view" data-page="attendance" hidden>
+            <div class="module-heading"><div><p class="eyebrow">THỜI GIAN & CA LÀM</p><h1>Quản lý chấm công</h1><p class="page-subtitle">Theo dõi ngày công và giờ tăng ca theo kỳ.</p></div><div class="period-controls"><label><span class="sr-only">Tháng chấm công</span><select aria-label="Tháng chấm công" data-attendance-month></select></label><label><span class="sr-only">Năm chấm công</span><select aria-label="Năm chấm công" data-attendance-year></select></label></div></div>
+            <div class="summary-cards"><article class="summary-card"><span class="summary-icon blue">♙</span><div><small>Tổng nhân viên</small><strong data-attendance-staff>0</strong></div></article><article class="summary-card"><span class="summary-icon green">✓</span><div><small>Tổng ngày công</small><strong data-attendance-days>0</strong></div></article><article class="summary-card"><span class="summary-icon purple">◷</span><div><small>Tổng giờ tăng ca</small><strong data-attendance-overtime>0 giờ</strong></div></article></div>
+            <article class="panel data-panel"><div class="module-panel-heading"><div><h2>Bảng chấm công</h2><p>Chỉnh sửa trực tiếp ngày công và giờ tăng ca.</p></div><span class="saved-label"><i></i>Lưu tự động</span></div><div class="table-scroll"><table class="module-table"><thead><tr><th>NHÂN VIÊN</th><th>PHÒNG BAN</th><th>NGÀY CÔNG</th><th>TĂNG CA (GIỜ)</th><th>TRẠNG THÁI</th></tr></thead><tbody data-attendance-rows></tbody></table></div></article>
           </section>
 
-          <section class="page-view" data-route-view="payroll" hidden>
-            <div class="page-heading"><div><p class="eyebrow">THU NHẬP & PHÚC LỢI</p><h1>Quản lý tiền lương</h1><p class="page-subtitle">Tính toán bảng lương minh bạch theo ngày công thực tế.</p></div><div class="period-picker"><label><span class="sr-only">Tháng lương</span><select data-payroll-month></select></label><label><span class="sr-only">Năm lương</span><select data-payroll-year></select></label></div></div>
-            <div class="payroll-actions"><p class="period-description" data-payroll-period>Chưa tính bảng lương cho kỳ này.</p><button class="button button-primary" type="button" data-calculate-payroll><span aria-hidden="true">▧</span> Tính lương hàng loạt</button></div>
-            <div class="panel table-panel"><div class="table-wrap payroll-table-wrap"><table class="payroll-table"><thead><tr><th>NHÂN VIÊN</th><th>LƯƠNG CƠ BẢN</th><th>NGÀY CÔNG</th><th>TĂNG CA</th><th>PHỤ CẤP</th><th>THƯỞNG</th><th>BHXH (8%)</th><th>THUẾ TNCN</th><th>THỰC LĨNH</th></tr></thead><tbody data-payroll-rows></tbody><tfoot><tr><th colspan="8">TỔNG QUỸ LƯƠNG (TRƯỚC KHẤU TRỪ)</th><td data-payroll-gross-total>—</td></tr><tr><th colspan="8">TỔNG THỰC CHI</th><td data-payroll-total>—</td></tr></tfoot></table></div><div class="payroll-footnote"><span>ⓘ</span> Thuế TNCN minh họa: 10% phần thu nhập chịu thuế sau giảm trừ 11 triệu đồng.</div></div>
+          <section class="module-view" data-page="leave" hidden>
+            <div class="module-heading"><div><p class="eyebrow">ĐƠN TỪ & LỊCH NGHỈ</p><h1>Quản lý nghỉ phép</h1><p class="page-subtitle">Tiếp nhận và xử lý yêu cầu nghỉ của nhân viên.</p></div><button class="action-button primary" type="button" data-open-leave>＋ Tạo đơn nghỉ phép</button></div>
+            <div class="summary-cards"><article class="summary-card"><span class="summary-icon amber">◷</span><div><small>Đơn chờ duyệt</small><strong data-leave-pending-count>0</strong></div></article><article class="summary-card"><span class="summary-icon green">✓</span><div><small>Đơn đã duyệt</small><strong data-leave-approved-count>0</strong></div></article><article class="summary-card"><span class="summary-icon blue">♡</span><div><small>Phép năm còn lại trung bình</small><strong data-leave-average-balance>0 ngày</strong></div></article></div>
+            <article class="panel data-panel"><div class="module-panel-heading"><div><h2>Danh sách đơn nghỉ phép</h2><p>Trạng thái và số ngày phép còn lại theo nhân viên.</p></div><label><span class="sr-only">Lọc đơn nghỉ phép</span><select class="filter-select" aria-label="Lọc đơn nghỉ phép" data-leave-filter><option value="">Tất cả đơn</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="rejected">Từ chối</option></select></label></div><div class="table-scroll"><table class="module-table leave-table"><thead><tr><th>NHÂN VIÊN</th><th>LOẠI NGHỈ</th><th>THỜI GIAN</th><th>SỐ NGÀY</th><th>PHÉP CÒN</th><th>LÝ DO</th><th>TRẠNG THÁI</th><th>THAO TÁC</th></tr></thead><tbody data-leave-rows></tbody></table></div></article>
           </section>
 
-          <section class="page-view" data-route-view="reports" hidden>
-            <div class="page-heading"><div><p class="eyebrow">PHÂN TÍCH & TỔNG HỢP</p><h1>Báo cáo nhân sự</h1><p class="page-subtitle">Theo dõi biến động nhân sự và chi phí lương theo tháng.</p></div><span class="date-chip"><span aria-hidden="true">▤</span> Báo cáo 6 tháng</span></div>
-            <div class="summary-strip report-summary"><article class="summary-tile"><span class="summary-symbol icon-blue">♙</span><div><small>Nhân sự hiện tại</small><strong data-report-headcount>0</strong></div></article><article class="summary-tile"><span class="summary-symbol icon-green">↗</span><div><small>Tuyển mới trong tháng</small><strong data-report-hires>0</strong></div></article><article class="summary-tile"><span class="summary-symbol icon-violet">₫</span><div><small>Quỹ lương tháng</small><strong data-report-payroll>—</strong></div></article></div>
-            <div class="panel table-panel"><div class="panel-heading table-panel-heading"><div><h2>Biến động nhân sự & quỹ lương</h2><p>Số liệu tổng hợp theo từng tháng trong 6 tháng gần nhất.</p></div></div><div class="table-wrap"><table><thead><tr><th>KỲ BÁO CÁO</th><th>NHÂN VIÊN ĐẦU KỲ</th><th>TUYỂN MỚI</th><th>NGHỈ VIỆC</th><th>NHÂN VIÊN CUỐI KỲ</th><th>QUỸ LƯƠNG ƯỚC TÍNH</th></tr></thead><tbody data-report-rows></tbody></table></div></div>
+          <section class="module-view" data-page="payroll" hidden>
+            <div class="module-heading"><div><p class="eyebrow">THU NHẬP & PHÚC LỢI</p><h1>Quản lý tiền lương</h1><p class="page-subtitle">Tính lương, các khoản khấu trừ và thực lĩnh theo kỳ.</p></div><div class="period-controls"><label><span class="sr-only">Tháng lương</span><select aria-label="Tháng lương" data-payroll-month></select></label><label><span class="sr-only">Năm lương</span><select aria-label="Năm lương" data-payroll-year></select></label></div></div>
+            <div class="payroll-toolbar"><span data-payroll-period>Chọn kỳ và tính lương để xem bảng lương.</span><button class="action-button primary" type="button" data-calculate-payroll>▧ Tính lương hàng loạt</button></div>
+            <article class="panel data-panel"><div class="table-scroll"><table class="module-table payroll-table"><thead><tr><th>NHÂN VIÊN</th><th>LƯƠNG CƠ BẢN</th><th>NGÀY CÔNG</th><th>TĂNG CA</th><th>PHỤ CẤP</th><th>THƯỞNG</th><th>BHXH (8%)</th><th>THUẾ TNCN</th><th>THỰC LĨNH</th></tr></thead><tbody data-payroll-rows><tr><td class="empty-cell" colspan="9">Chọn “Tính lương hàng loạt” để tính bảng lương.</td></tr></tbody><tfoot><tr><th colspan="8">TỔNG QUỸ LƯƠNG TRƯỚC KHẤU TRỪ</th><td data-payroll-gross-total>—</td></tr><tr><th colspan="8">TỔNG THỰC CHI</th><td data-payroll-net-total>—</td></tr></tfoot></table></div><p class="payroll-note">ⓘ Thuế TNCN minh họa: 10% phần thu nhập chịu thuế sau giảm trừ 11.000.000 ₫.</p></article>
           </section>
-          <footer class="page-footer">© 2026 HRM System <span>·</span> Quản lý nhân sự & tiền lương</footer>
+
+          <section class="module-view" data-page="reports" hidden>
+            <div class="module-heading"><div><p class="eyebrow">PHÂN TÍCH & TỔNG HỢP</p><h1>Báo cáo nhân sự</h1><p class="page-subtitle">Theo dõi biến động nhân sự và quỹ lương theo tháng.</p></div><span class="period-tag" data-report-period></span></div>
+            <div class="summary-cards report-summary"><article class="summary-card"><span class="summary-icon blue">♙</span><div><small>Nhân sự hiện tại</small><strong data-report-staff>0</strong></div></article><article class="summary-card"><span class="summary-icon green">↗</span><div><small>Tuyển mới trong tháng</small><strong data-report-hires>0</strong></div></article><article class="summary-card"><span class="summary-icon purple">₫</span><div><small>Quỹ lương tháng</small><strong data-report-payroll>—</strong></div></article></div>
+            <article class="panel data-panel"><div class="module-panel-heading"><div><h2>Biến động nhân sự & quỹ lương</h2><p>Số liệu tổng hợp 6 tháng gần nhất.</p></div></div><div class="table-scroll"><table class="module-table"><thead><tr><th>KỲ BÁO CÁO</th><th>NHÂN VIÊN ĐẦU KỲ</th><th>TUYỂN MỚI</th><th>NGHỈ VIỆC</th><th>NHÂN VIÊN CUỐI KỲ</th><th>QUỸ LƯƠNG ƯỚC TÍNH</th></tr></thead><tbody data-report-rows></tbody></table></div></article>
+          </section>
         </div>
       </main>
     </div>
 
-    <dialog class="app-dialog" data-employee-dialog aria-labelledby="employee-dialog-title">
-      <form class="dialog-form" data-employee-form>
-        <div class="dialog-heading"><div><p class="eyebrow">HỒ SƠ NHÂN SỰ</p><h2 id="employee-dialog-title" data-employee-dialog-title>Thêm nhân viên</h2></div><button class="dialog-close" type="button" data-close-employee aria-label="Đóng">×</button></div>
+    <dialog class="form-dialog" data-employee-dialog aria-labelledby="employee-dialog-title">
+      <form class="dialog-content" data-employee-form>
+        <div class="dialog-heading"><div><p class="eyebrow">HỒ SƠ NHÂN SỰ</p><h2 id="employee-dialog-title">Thêm nhân viên</h2></div><button class="dialog-close" type="button" data-close-employee aria-label="Đóng">×</button></div>
         <div class="form-grid">
-          <label class="form-field form-span-2">Họ và tên<input name="name" type="text" maxlength="100" required autocomplete="name" placeholder="Nguyễn Văn An"></label>
-          <label class="form-field">Mã nhân viên<input name="id" type="text" maxlength="20" required placeholder="NV011"></label>
-          <label class="form-field">Email<input name="email" type="email" maxlength="120" required autocomplete="email" placeholder="ten@congty.vn"></label>
-          <label class="form-field">Số điện thoại<input name="phone" type="tel" maxlength="20" required autocomplete="tel" placeholder="0901 234 567"></label>
+          <label class="form-field full-field">Họ tên<input name="name" maxlength="100" required placeholder="Nguyễn Văn An"></label>
+          <label class="form-field">Mã NV<input name="id" maxlength="20" required placeholder="NV013"></label>
+          <label class="form-field">Email<input name="email" type="email" maxlength="120" required placeholder="ten@congty.vn"></label>
+          <label class="form-field">Số điện thoại<input name="phone" type="tel" maxlength="20" required placeholder="0901 234 567"></label>
           <label class="form-field">Phòng ban<select name="department" required><option value="">Chọn phòng ban</option><option>Nhân sự</option><option>Công nghệ</option><option>Marketing</option><option>Thiết kế</option><option>Kinh doanh</option><option>Vận hành</option></select></label>
-          <label class="form-field">Vị trí<input name="role" type="text" maxlength="80" required placeholder="Chuyên viên"></label>
+          <label class="form-field">Vị trí<input name="role" maxlength="80" required placeholder="Chuyên viên"></label>
           <label class="form-field">Ngày vào làm<input name="start" type="date" required></label>
-          <label class="form-field">Lương cơ bản (₫)<input name="base" type="number" min="0" step="100000" required placeholder="15000000"></label>
+          <label class="form-field">Lương cơ bản (₫)<input name="base" type="number" min="0" step="100000" required></label>
           <label class="form-field">Trạng thái<select name="status" required><option value="active">Đang làm việc</option><option value="probation">Thử việc</option><option value="inactive">Đã nghỉ</option></select></label>
         </div>
-        <p class="form-message" data-employee-message role="status" aria-live="polite"></p>
-        <div class="dialog-actions"><button class="button button-secondary" type="button" data-cancel-employee>Hủy</button><button class="button button-primary" type="submit">Lưu nhân viên</button></div>
+        <p class="form-error" data-employee-error role="status" aria-live="polite"></p>
+        <div class="dialog-actions"><button class="action-button secondary" type="button" data-cancel-employee>Hủy</button><button class="action-button primary" type="submit">Lưu nhân viên</button></div>
       </form>
     </dialog>
-
-    <dialog class="app-dialog leave-dialog" data-leave-dialog aria-labelledby="leave-dialog-title">
-      <form class="dialog-form" data-leave-form>
+    <dialog class="form-dialog" data-leave-dialog aria-labelledby="leave-dialog-title">
+      <form class="dialog-content" data-leave-form>
         <div class="dialog-heading"><div><p class="eyebrow">ĐƠN TỪ & LỊCH NGHỈ</p><h2 id="leave-dialog-title">Tạo đơn nghỉ phép</h2></div><button class="dialog-close" type="button" data-close-leave aria-label="Đóng">×</button></div>
         <div class="form-grid">
-          <label class="form-field form-span-2">Nhân viên<select name="employeeId" required data-leave-employee></select></label>
-          <label class="form-field">Loại nghỉ<select name="type" required><option value="Nghỉ phép năm">Nghỉ phép năm</option><option value="Nghỉ ốm">Nghỉ ốm</option><option value="Nghỉ việc riêng">Nghỉ việc riêng</option></select></label>
+          <label class="form-field full-field">Nhân viên<select name="employeeId" required data-leave-employee></select></label>
+          <label class="form-field">Loại nghỉ<select name="type" required><option value="Phép năm">Nghỉ phép năm</option><option value="Nghỉ ốm">Nghỉ ốm</option><option value="Việc riêng">Nghỉ việc riêng</option></select></label>
           <span></span>
           <label class="form-field">Từ ngày<input name="from" type="date" required></label>
           <label class="form-field">Đến ngày<input name="to" type="date" required></label>
-          <label class="form-field form-span-2">Lý do<textarea name="reason" rows="3" maxlength="300" required placeholder="Nhập lý do xin nghỉ..."></textarea></label>
+          <label class="form-field full-field">Lý do<textarea name="reason" rows="3" maxlength="300" required placeholder="Nhập lý do xin nghỉ..."></textarea></label>
         </div>
-        <p class="form-message" data-leave-message role="status" aria-live="polite"></p>
-        <div class="dialog-actions"><button class="button button-secondary" type="button" data-cancel-leave>Hủy</button><button class="button button-primary" type="submit">Gửi đơn</button></div>
+        <p class="form-error" data-leave-error role="status" aria-live="polite"></p>
+        <div class="dialog-actions"><button class="action-button secondary" type="button" data-cancel-leave>Hủy</button><button class="action-button primary" type="submit">Gửi đơn</button></div>
       </form>
     </dialog>
     <div class="toast" data-toast role="status" aria-live="polite"></div>
